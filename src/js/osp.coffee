@@ -43,8 +43,3 @@ osp.controller("ControllerCntl", ($scope, $http, $routeParams) ->
       ospMap.drawMap($scope.ticks)
     )
 )
-
-osp.controller("SensorCntl", ($scope, $routeParams) ->
-  $scope.name = "SensorCntl"
-  $scope.params = $routeParams
-)
