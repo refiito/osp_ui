@@ -28,13 +28,20 @@ osp.controller("ControllersCntl", ($scope, $http, $route, $routeParams, $locatio
   )
 )
 
-osp.controller("ControllerCntl", ($scope, $routeParams) ->
+osp.controller("ControllerCntl", ($scope, $http, $routeParams) ->
   $scope.currentController = _.find($scope.controllers, (item) ->
     item.id == $routeParams.controllerId
   )
+
   ospMap.drawMap()
+
   $scope.name = "ControllerCntl"
   $scope.params = $routeParams
+
+  if $scope.currentController
+    $http.get('http://zeitl.com/api/controllers/' + $scope.currentController.id + '/sensors').success((data)->
+      $scope.sensors = data
+    )
 )
 
 osp.controller("SensorCntl", ($scope, $routeParams) ->
