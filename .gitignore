@@ -1,1 +1,7 @@
 src/js/osp.js
+.ruby-version
+Capfile
+Gemfile
+Gemfile.lock
+config/
+
