@@ -1,4 +1,4 @@
-src/js/osp.js
+src/js/*.js
 .ruby-version
 Capfile
 Gemfile
