@@ -33,8 +33,7 @@ osp = angular.module('osp', ['ngRoute']).config(($routeProvider, $locationProvid
 		templateUrl: 'sensor.html',
 		controller: 'SensorCntl'
 	)
- 
- 	# configure html5 to get links working on jsfiddle
+
 	$locationProvider.html5Mode(false)
 )
 
@@ -55,6 +54,9 @@ osp.controller("ControllersCntl", ($scope, $http, $route, $routeParams, $locatio
 )
 
 osp.controller("ControllerCntl", ($scope, $routeParams) ->
+	$scope.currentController = _.find($scope.controllers, (item) ->
+		item.id == $routeParams.controllerId
+	)
 	$scope.name = "ControllerCntl"
 	$scope.params = $routeParams
 )
