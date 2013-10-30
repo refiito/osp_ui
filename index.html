@@ -47,7 +47,35 @@
         </div>
 
         <div class="col-md-10">
-          <canvas id="lines" width="600" height="200"></canvas>
+          <div class="input-group">
+            <span class="input-group-addon">Group:</span>
+            <input type="text" class="form-control" placeholder="Username">
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Sensor</th>
+                    <th>Last reading</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      88989
+                    </td>
+                    <td>
+                      10min ago
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-9">
+              <canvas class="pull-right" id="lines" width="700" height="200"></canvas>
+            </div>
+          </div>
         </div>
       </div>
       </div>
