@@ -11,7 +11,8 @@ ospMap.putData = (labels, data, canvas) ->
 				pointStrokeColor : "#fff",
 				data : data,
 				scaleShowLabels: false,
-				pointDot: false
+				pointDot: false,
+				animation: false
 			}
 		]
 
