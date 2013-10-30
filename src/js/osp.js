@@ -22,3 +22,15 @@ var data = {
 }
 
 var chart = new Chart(ctx).Line(data);
+
+function ControllersCtrl($scope, $http) {
+	$scope.controllers = [];
+
+	$http({method: 'GET', url: 'http://zeitl.com/api/controllers'}).
+  	success(function(data, status, headers, config) {
+  			$scope.controllers = data;
+  	}).
+  	error(function(data, status, headers, config) {
+  		console.log(data, status);
+	});
+}
