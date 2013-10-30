@@ -9,8 +9,8 @@ osp = angular.module('osp', ['ngRoute']).config(($routeProvider, $locationProvid
       controller: 'ControllerCntl'
   )
   $routeProvider.when('/controller/:controllerId/sensor/:sensorId',
-    templateUrl: 'sensor.html',
-    controller: 'SensorCntl'
+    templateUrl: 'controller.html',
+    controller: 'ControllerCntl'
   )
 
   $locationProvider.html5Mode(false)
@@ -29,19 +29,14 @@ osp.controller("ControllersCntl", ($scope, $http, $route, $routeParams, $locatio
 )
 
 osp.controller("ControllerCntl", ($scope, $http, $routeParams) ->
-  $scope.currentController = _.find($scope.controllers, (item) ->
-    item.id == $routeParams.controllerId
-  )
-
-  ospMap.drawMap()
-
   $scope.name = "ControllerCntl"
   $scope.params = $routeParams
 
-  if $scope.currentController
-    $http.get('http://zeitl.com/api/controllers/' + $scope.currentController.id + '/sensors').success((data)->
-      $scope.sensors = data
-    )
+  $http.get('http://zeitl.com/api/controllers/' + $routeParams.controllerId + '/sensors').success((data)->
+    $scope.sensors = data
+  ).then(()->
+    ospMap.drawMap()
+  )
 )
 
 osp.controller("SensorCntl", ($scope, $routeParams) ->

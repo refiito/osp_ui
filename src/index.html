@@ -58,7 +58,7 @@
     <script type="text/ng-template" id="controller.html">
       <div class="input-group">
         <span class="input-group-addon">Group:</span>
-        <input type="text" class="form-control" placeholder="Group name" ng-model="currentController.name">
+        <input type="text" class="form-control" placeholder="Group name">
       </div>
       <div class="row top-15">
         <div class="col-md-3">
@@ -72,7 +72,7 @@
             <tbody>
               <tr ng-repeat="sensor in sensors">
                 <td>
-                  {{ sensor.id }}
+                  <a ng-href="#controller/{{$routeParams.controllerId}}/sensor/{{sensor.id}}">{{ sensor.id }}</a>
                 </td>
                 <td>
                   10min ago
