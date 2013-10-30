@@ -38,9 +38,9 @@ osp.controller("ControllerCntl", ($scope, $http, $routeParams) ->
 
   if $routeParams.sensorId
     $http.get('http://zeitl.com/api/sensors/' + $routeParams.sensorId + '/ticks').success((data)->
-      $scope.ticks = data
+      $scope.ticks = data.ticks
     ).then(()->
-      ospMap.drawMap()
+      ospMap.drawMap($scope.ticks)
     )
 )
 

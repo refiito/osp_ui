@@ -75,7 +75,7 @@
                   <a ng-href="#controller/{{$routeParams.controllerId}}/sensor/{{sensor.id}}">{{ sensor.id }}</a>
                 </td>
                 <td>
-                  10min ago
+                  {{ sensor.last_tick }}
                 </td>
               </tr>
             </tbody>
