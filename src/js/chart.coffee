@@ -1,4 +1,4 @@
-window.ospMap = {}
+ospMap = {}
 
 ospMap.drawMap = () ->
 	ctx = document.getElementById("lines").getContext("2d")
