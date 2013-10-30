@@ -1,15 +1,6 @@
 window.ospMap = {}
 
-ospMap.drawMap = (data) ->
-	battery = _.map(data, (model) ->
-		model.battery_voltage
-	)
-	labels = _.map(data, (model) ->
-		""
-	)
-
-	ctx = document.getElementById("lines").getContext("2d")
-
+ospMap.putData = (labels, data, canvas) ->
 	data =
 		labels : labels
 		datasets : [
@@ -18,10 +9,43 @@ ospMap.drawMap = (data) ->
 				strokeColor : "rgba(220,220,220,1)",
 				pointColor : "rgba(220,220,220,1)",
 				pointStrokeColor : "#fff",
-				data : battery,
+				data : data,
 				scaleShowLabels: false,
 				pointDot: false
 			}
 		]
 
-	chart = new Chart(ctx).Line(data)
+	chart = new Chart(document.getElementById(canvas).getContext("2d")).Line(data)
+	
+
+ospMap.drawMap = (data) ->
+	labels = _.map(data, (model) ->
+		""
+	)
+
+	#temp
+	temp = _.map(data, (model) ->
+		model.sensor1
+	)
+	ospMap.putData(labels, temp, 'temp')
+
+	#hue
+	hue = _.map(data, (model) ->
+		model.sensor2
+	)
+	ospMap.putData(labels, hue, 'hue')
+
+	#battery
+
+	battery = _.map(data, (model) ->
+		model.battery_voltage
+	)
+	ospMap.putData(labels, battery, 'battery')
+	
+	#signal
+	signal = _.map(data, (model) ->
+		parseInt(model.radio_quality)
+	)
+	ospMap.putData(labels, signal, 'signal')
+
+	
