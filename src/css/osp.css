@@ -24,3 +24,9 @@ body {
   left: 40px;
   height: 40px;
 }
+
+#map-canvas {
+  height: 600px;
+  margin: 0px;
+  padding: 0px
+}
