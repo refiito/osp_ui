@@ -93,6 +93,28 @@
                 </table>
               </div>
               <div class="col-md-9" ng-show="ticks">
+                <div ng-show="!chartView">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Datetime</th>
+                      <th>Battery voltage</th>
+                      <th>Temperature</th>
+                      <th>Humidity</th>
+                      <th>Radio quality</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="tick in ticks">
+                      <td ng-bind="formatDatetime(tick.datetime)"></td>
+                      <td ng-bind="tick.battery_voltage_visual"></td>
+                      <td ng-bind="tick.temperature"></td>
+                      <td ng-bind="tick.sensor2"></td>
+                      <td ng-bind="tick.radio_quality"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div>
                 <div ng-show="chartView">
                   <h4>Temperature</h4>
                   <div id="temp" class="chart_container">
