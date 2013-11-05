@@ -25,8 +25,6 @@ osp.controller("ControllersCntl", ($scope, $http, $route, $routeParams, $locatio
   )
 
   $scope.getActiveMenuItem = (controller_id) ->
-    console.log(controller_id)
-    console.log($scope.currentControllerId)
     if controller_id == osp.currentControllerId
       'active'
     else
