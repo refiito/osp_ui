@@ -10,7 +10,7 @@ osp.controller "MainController", ($scope, $http) ->
     $scope.selectController(if $scope.controllers.length > 0 then $scope.controllers[0] else null)
 
   $scope.range = 'Month'
-  $scope.chartView = !true
+  $scope.chartView = true
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
