@@ -15,6 +15,7 @@ ospMap.putData = (labels, data, container, chart) ->
 		renderer: 'line',
 		height: 200,
 		width: 600,
+		min: 'auto',
 		series: [
 			{
 				data: data,
@@ -23,21 +24,29 @@ ospMap.putData = (labels, data, container, chart) ->
 		]
 	)
 
+	prevShown = null
+
 	format = (n) ->
-		labels[n]
+		time = labels[n]
+		format = "HH:mm"
+		
+		if !prevShown? || (prevShown? && time? && (prevShown.date() > time.date()))
+			format = "DD.MM " + format
+		prevShown = time
+		if time? then time.format(format) else ''
 
 	x_ticks = new Rickshaw.Graph.Axis.X(
 		graph: chart,
 		orientation: 'bottom',
 		element: document.querySelector(container + " .x_axis"),
-		pixelsPerTick: 50,
+		pixelsPerTick: 75,
 		tickFormat: format
 	)
 
 	y_ticks = new Rickshaw.Graph.Axis.Y(
 		graph: chart,
 		orientation: 'left',
-		pixelsPerTick: 100,
+		pixelsPerTick: 25,
 		tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
 		element: document.querySelector(container + ' .y_axis'),
 	)
@@ -46,10 +55,8 @@ ospMap.putData = (labels, data, container, chart) ->
 
 
 ospMap.drawMap = (data) ->
-	ospMap.tempChart = null
-
 	labels = _.map(data, (model) ->
-		moment(model.datetime).format("HH:mm")
+		moment(model.datetime)
 	)
 
 	temp = _.map(data, (model, idx) ->
