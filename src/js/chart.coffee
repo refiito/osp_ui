@@ -5,54 +5,83 @@ ospMap.hueChart = null
 ospMap.batChart = null
 ospMap.sigChart = null
 
-ospMap.putData = (labels, data, canvas, chart_point) ->
-	chart_point = null
-	data =
-		labels : labels
-		datasets : [
+ospMap.putData = (labels, data, container, chart) ->
+	chart = null
+
+	chart = new Rickshaw.Graph(
+		element: document.querySelector(container + " .chart"),
+		renderer: 'line',
+		height: 200,
+		width: 600,
+		series: [
 			{
-				fillColor : "rgba(220,220,220,0.5)",
-				strokeColor : "rgba(220,220,220,1)",
-				pointColor : "rgba(220,220,220,1)",
-				pointStrokeColor : "#fff",
-				data : data
+				data: data,
+				color: "#c05020"
 			}
 		]
+	)
 
-	opts =
-		pointDot: false,
-		animation: false
+	format = (n) ->
+		labels[n]
 
-	chart_point = new Chart(document.getElementById(canvas).getContext("2d")).Line(data, opts)
-	
+	x_ticks = new Rickshaw.Graph.Axis.X(
+		graph: chart,
+		orientation: 'bottom',
+		element: document.querySelector(container + " .x_axis"),
+		pixelsPerTick: 50,
+		tickFormat: format
+	)
+
+	y_ticks = new Rickshaw.Graph.Axis.Y(
+		graph: chart,
+		orientation: 'left',
+		pixelsPerTick: 100,
+		tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+		element: document.querySelector(container + ' .y_axis'),
+	)
+
+	chart.render()
+
 
 ospMap.drawMap = (data) ->
-	labels = _.map(data, (model, idx) ->
-		if idx % 10 is 0 then moment(model.datetime).format("HH:mm") else ''
+	ospMap.tempChart = null
+
+	labels = _.map(data, (model) ->
+		moment(model.datetime).format("HH:mm")
 	)
 
-	#temp
-	temp = _.map(data, (model) ->
-		model.temperature
+	temp = _.map(data, (model, idx) ->
+		{
+			x: (idx + 1)
+			y: model.temperature
+		}
 	)
-	ospMap.putData(labels, temp, 'temp', ospMap.tempChart)
+
+	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
 
 	#hue
-	hue = _.map(data, (model) ->
-		model.sensor2
+	hue = _.map(data, (model, idx) ->
+		{
+			x: (idx + 1)
+			y: parseFloat(model.sensor2)
+		}
 	)
-	ospMap.putData(labels, hue, 'hue', ospMap.hueChart)
+	ospMap.putData(labels, hue, '#hue', ospMap.hueChart)
 
 	#battery
-	battery = _.map(data, (model) ->
-		model.battery_voltage_visual
+	battery = _.map(data, (model, idx) ->
+		{
+			x: (idx + 1)
+			y: model.battery_voltage_visual
+		}
 	)
-	ospMap.putData(labels, battery, 'battery', ospMap.batChart)
+	ospMap.putData(labels, battery, '#battery', ospMap.batChart)
 	
 	#signal
-	signal = _.map(data, (model) ->
-		parseInt(model.radio_quality)
+	signal = _.map(data, (model, idx) ->
+		{
+			x: (idx + 1)
+			y: parseInt(model.radio_quality)
+		}
 	)
-	ospMap.putData(labels, signal, 'signal', ospMap.sigChart)
-
-	
+	ospMap.putData(labels, signal, '#signal', ospMap.sigChart)
