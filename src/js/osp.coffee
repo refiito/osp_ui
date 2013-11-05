@@ -12,7 +12,7 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.loadTicks = ->
     console.log 'loadTicks'
-    $http.get('http://zeitl.com/api/sensors/' + $scope.selectedSensor.id + '/ticks').success (data) ->
+    $http.get('http://zeitl.com/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
       $scope.ticks = data.ticks
       ospMap.drawMap $scope.ticks
 
