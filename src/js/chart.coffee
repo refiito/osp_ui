@@ -71,7 +71,7 @@ ospMap.drawMap = (data, range) ->
 		moment(model.datetime)
 	)
 
-	temp = _.map(dat, (model, idx) ->
+	temp = _.map(data, (model, idx) ->
 		{
 			x: idx
 			y: parseFloat(model.temperature)
@@ -81,7 +81,7 @@ ospMap.drawMap = (data, range) ->
 	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
 
 	#hue
-	hue = _.map(dat, (model, idx) ->
+	hue = _.map(data, (model, idx) ->
 		{
 			x: (idx + 1)
 			y: parseFloat(model.sensor2)
@@ -90,7 +90,7 @@ ospMap.drawMap = (data, range) ->
 	ospMap.putData(labels, hue, '#hue', ospMap.hueChart)
 
 	#battery
-	battery = _.map(dat, (model, idx) ->
+	battery = _.map(data, (model, idx) ->
 		{
 			x: (idx + 1)
 			y: parseFloat(model.battery_voltage_visual)
@@ -99,7 +99,7 @@ ospMap.drawMap = (data, range) ->
 	ospMap.putData(labels, battery, '#battery', ospMap.batChart)
 	
 	#signal
-	signal = _.map(dat, (model, idx) ->
+	signal = _.map(data, (model, idx) ->
 		{
 			x: (idx + 1)
 			y: parseInt(model.radio_quality)
