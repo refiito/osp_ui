@@ -40,7 +40,3 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.saveControllerName = (controller) ->
     $http.put(host + '/api/controllers/' + $scope.selectedController.id, $scope.selectedController)
-    .success((data, textStatus, jqXHR) ->
-    ).error((data, textStatus, jqXHR) ->
-      # FIXME: error state
-    )
