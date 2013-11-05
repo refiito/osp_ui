@@ -20,9 +20,8 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
-      $scope.ticks = _.range(data.ticks, 1, 100)
-      console.log '$scope.ticks', $scope.ticks.length
-      ospMap.drawMap $scope.ticks, $scope.range
+      $scope.paginatedTicks = data.ticks.slice(0, 99)
+      ospMap.drawMap data.ticks, $scope.range
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor

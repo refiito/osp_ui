@@ -93,7 +93,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col-md-9" ng-show="ticks.length > 0">
+              <div class="col-md-9" ng-show="paginatedTicks.length > 0">
                 <div ng-show="!chartView">
                 <table>
                   <thead>
@@ -106,7 +106,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="tick in ticks">
+                    <tr ng-repeat="tick in paginatedTicks">
                       <td ng-bind="formatDatetime(tick.datetime)"></td>
                       <td ng-bind="tick.battery_voltage_visual"></td>
                       <td ng-bind="tick.temperature"></td>

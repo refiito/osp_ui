@@ -28,7 +28,7 @@ ospMap.putData = (labels, data, container, chart) ->
 	)
 
 	format = (n) ->
-		labels[n].format("DD.MM HH:mm")
+		labels[n]
 
 	xelm = document.querySelector(container + " .x_axis")
 	xelm.innerHTML = ""
@@ -56,53 +56,21 @@ ospMap.putData = (labels, data, container, chart) ->
 
 
 ospMap.drawMap = (data, range) ->
-	start = moment()
-	switch range
-		when 'Year' then start.subtract('years', 1)
-		when 'Quarter' then start.subtract('months', 3)
-		#Month
-		else start.subtract('months', 1)
+	labels = []
+	temp = []
+	hue = []
+	battery = []
+	signal = []
 
-	dat = _.filter(data, (model) ->
-		start.isBefore(model.datetime)
-	)
-
-	labels = _.map(data, (model) ->
-		moment(model.datetime)
-	)
-
-	temp = _.map(dat, (model, idx) ->
-		{
-			x: idx
-			y: parseFloat(model.temperature)
-		}
+	_.each(data, (model, idx) ->
+		labels.push(moment(model.datetime).format("DD.MM HH:mm"))
+		temp.push({x: idx, y: parseFloat(model.temperature)})
+		hue.push({x: (idx + 1), y: parseFloat(model.sensor2)})
+		battery.push({x: (idx + 1), y: parseFloat(model.battery_voltage_visual)})
+		signal.push({x: (idx + 1), y: parseInt(model.radio_quality)})
 	)
 
 	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
-
-	#hue
-	hue = _.map(dat, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseFloat(model.sensor2)
-		}
-	)
 	ospMap.putData(labels, hue, '#hue', ospMap.hueChart)
-
-	#battery
-	battery = _.map(dat, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseFloat(model.battery_voltage_visual)
-		}
-	)
 	ospMap.putData(labels, battery, '#battery', ospMap.batChart)
-	
-	#signal
-	signal = _.map(dat, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseInt(model.radio_quality)
-		}
-	)
 	ospMap.putData(labels, signal, '#signal', ospMap.sigChart)
