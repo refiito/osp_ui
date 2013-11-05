@@ -10,12 +10,14 @@ ospMap.putData = (labels, data, container, chart) ->
 
 	chart = null
 
+	elm = document.querySelector(container + " .chart")
+	elm.innerHTML = ""
+
 	chart = new Rickshaw.Graph(
-		element: document.querySelector(container + " .chart"),
+		element: elm,
 		renderer: 'line',
 		height: 200,
 		width: 600,
-		min: 'auto',
 		series: [
 			{
 				data: data,
@@ -24,39 +26,39 @@ ospMap.putData = (labels, data, container, chart) ->
 		]
 	)
 
-	prevShown = null
-
 	format = (n) ->
-		time = labels[n]
-		format = "HH:mm"
-		
-		if !prevShown? || (prevShown? && time? && (prevShown.date() > time.date()))
-			format = "DD.MM " + format
-		prevShown = time
-		if time? then time.format(format) else ''
+		labels[n]
+
+	xelm = document.querySelector(container + " .x_axis")
+	xelm.innerHTML = ""
 
 	x_ticks = new Rickshaw.Graph.Axis.X(
 		graph: chart,
 		orientation: 'bottom',
-		element: document.querySelector(container + " .x_axis"),
-		pixelsPerTick: 75,
+		element: xelm,
+		pixelsPerTick: 50,
 		tickFormat: format
 	)
+
+	yelm = document.querySelector(container + ' .y_axis')
+	yelm.innerHTML = ""
 
 	y_ticks = new Rickshaw.Graph.Axis.Y(
 		graph: chart,
 		orientation: 'left',
-		pixelsPerTick: 25,
+		pixelsPerTick: 100,
 		tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-		element: document.querySelector(container + ' .y_axis'),
+		element: yelm,
 	)
 
 	chart.render()
 
 
 ospMap.drawMap = (data) ->
+	ospMap.tempChart = null
+
 	labels = _.map(data, (model) ->
-		moment(model.datetime)
+		moment(model.datetime).format("HH:mm")
 	)
 
 	temp = _.map(data, (model, idx) ->
