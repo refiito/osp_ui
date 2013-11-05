@@ -3,7 +3,7 @@ osp = angular.module 'osp', ->
 host = 'http://zeitl.com'
 #host = 'http://localhost:8084'
 
-kPageSize=100
+kPageSize = 20
 
 osp.controller "MainController", ($scope, $http) ->
   $http.get(host + '/api/controllers').success (data) ->
@@ -14,6 +14,7 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.chartView = true
   $scope.ticks = []
   $scope.page = 1
+  $scope.pages = 1
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
@@ -24,8 +25,11 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.loadTicks = ->
     $scope.processing = true
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
-      $scope.paginatedTicks = data.ticks.slice(0 * $scope.page, (kPageSize-1) * $scope.page)
-      $scope.pages = data.ticks.length / kPageSize
+      $scope.ticks = data.ticks
+      $scope.paginatedTicks = data.ticks.slice 0, kPageSize
+      $scope.pages = Math.floor data.ticks.length / kPageSize
+      $scope.pages += 1 if data.ticks.length % kPageSize
+      $scope.page = 1
       setTimeout(->
         ospMap.drawMap data.ticks, () ->
           $scope.$apply(()->
@@ -43,6 +47,14 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.saveControllerName = (controller) ->
     $http.put(host + '/api/controllers/' + $scope.selectedController.id, $scope.selectedController)
+
+  $scope.setPage = (page) ->
+    page = 1 if page < 1
+    page = $scope.pages if page > $scope.pages
+    $scope.page = page
+    start = kPageSize*($scope.page-1)
+    end = start+kPageSize
+    $scope.paginatedTicks = $scope.ticks.slice start, end
 
 osp.filter 'human_date', -> (value) -> moment(value).format("DD.MM.YYYY HH:mm")
 osp.filter 'unnamed', -> (value) ->  if value then value else '(unnamed)'

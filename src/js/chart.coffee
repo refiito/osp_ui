@@ -20,10 +20,8 @@ ospMap.putData = (labels, data, container, chart) ->
 		width: 600,
 		min: 'auto',
 		series: [
-			{
-				data: data,
-				color: "#c05020"
-			}
+			data: data,
+			color: "#c05020"
 		]
 	)
 

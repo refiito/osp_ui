@@ -115,6 +115,15 @@
                       </tr>
                     </tbody>
                   </table>
+                  <div ng-show="pages > 0">
+                    <ul class="pagination">
+                      <li ng-class="{disabled: page==1}"><a href="#" ng-click="setPage(1)">First page</a></li>
+                      <li ng-class="{disabled: page-1<1}"><a href="#" ng-click="setPage(page-1)">Previous</a></li>
+                      <li ng-class="{disabled: page+1>pages}"><a href="#" ng-click="setPage(page+1)">Next</a></li>
+                      <li ng-class="{disabled: page==pages}"><a href="#" ng-click="setPage(pages)">Last page</a></li>
+                    </ul>
+                    <span>Page {{ page }} / {{ pages }}</span>
+                  </div>
                 </div><!-- list view -->
                 <div ng-show="chartView">
                   <div id="wait-overlay" ng-show="processing"></div>
