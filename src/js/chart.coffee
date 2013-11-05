@@ -57,13 +57,6 @@ ospMap.putData = (labels, data, container, chart) ->
 
 
 ospMap.drawMap = (data, range) ->
-	start = moment()
-	switch range
-		when 'Year' then start.subtract('years', 1)
-		when 'Quarter' then start.subtract('months', 3)
-		#Month
-		else start.subtract('months', 1)
-
 	labels = _.map(data, (model) ->
 		moment(model.datetime)
 	)
