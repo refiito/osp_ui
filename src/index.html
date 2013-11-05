@@ -45,11 +45,11 @@
           <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
               <li ng-repeat="controller in controllers" ng-class="{active: selectedController==controller}">
-                <a href="#" ng-click="selectController(controller)">{{ controller.name }}</a>
+                <a href="#" ng-click="selectController(controller)" ng-bind="controller.name"></a>
               </li>
             </ul>
           </div><!-- col -->
-          <div class="col-md-10">
+          <div class="col-md-10" ng-show="selectedController">
             <div class="row">
             <div class="col-md-3 pull-left">
               <div class="input-group">
@@ -62,7 +62,9 @@
               <li class="active"><a href="#">Chart</a></li>
               <li><a href="#">List view</a></li>
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ range }}<span class="caret"></span>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <span ng-bind="range"></span>
+                  <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="#" ng-click="range='Year'">Year</a></li>
