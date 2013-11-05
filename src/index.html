@@ -56,10 +56,30 @@
     </div><!-- container -->
 
     <script type="text/ng-template" id="controller.html">
-      <div class="input-group">
-        <span class="input-group-addon">Group:</span>
-        <input type="text" class="form-control" placeholder="Group name">
+      <div class="row">
+      <div class="col-md-3 pull-left">
+        <div class="input-group">
+          <span class="input-group-addon">Group:</span>
+          <input type="text" class="form-control" placeholder="Group name">
+        </div>
       </div>
+      
+      <ul class="nav nav-tabs pull-right">
+        <li class="active"><a href="javascript:void(0);">Chart</a></li>
+        <li><a href="javascript:void(0);">List view</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+            Range <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:void(0);">Year</a></li>
+            <li><a href="javascript:void(0);">Quarter</a></li>
+            <li><a href="javascript:void(0);">Month</a></li>
+          </ul>
+        </li>
+      </ul>
+      </div>
+      <div class="clearfix"></div>
       <div class="row top-15">
         <div class="col-md-3">
           <table class="table table-striped">
