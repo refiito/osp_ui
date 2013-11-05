@@ -75,7 +75,6 @@ ospMap.drawMap = (data, done) ->
 	ospMap.putData(labels, signal, '#signal', ospMap.sigChart)
 
 	if done?
-		console.log('calling')
 		done()
 
 	true
