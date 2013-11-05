@@ -35,5 +35,11 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.formatDatetime = (value) -> moment(value).format("DD.MM.YYYY HH:mm")
 
-  $scope.controllerName = (controller) ->
-    if controller.name then controller.name else '(unnamed)'
+  $scope.controllerName = (controller) -> if controller.name then controller.name else '(unnamed)'
+
+  $scope.saveControllerName = (controller) ->
+    $http.put(host + '/api/controllers/' + $scope.selectedController.id, $scope.selectedController)
+    .success((data, textStatus, jqXHR) ->
+    ).error((data, textStatus, jqXHR) ->
+      # FIXME: error state
+    )
