@@ -24,17 +24,14 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
-      $scope.paginatedTicks = data.ticks.slice(0 * $scope.page, (kPageSize-1) * $scope.page)
+      $scope.ticks = data.ticks
+      $scope.paginatedTicks = data.ticks.slice(0, kPageSize-1)
       $scope.pages = Math.floor data.ticks.length / kPageSize
       $scope.pages += 1 if data.ticks.length % kPageSize
       $scope.page = 1
       setTimeout(->
         ospMap.drawMap data.ticks, $scope.range
       , 0)
-      console.log 'data.ticks.length', data.ticks.length
-      console.log '$scope.paginatedTicks', $scope.paginatedTicks.length
-      console.log '$scope.pages', $scope.pages
-      console.log '$scope.page', $scope.page
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor
@@ -50,8 +47,10 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.setPage = (page) ->
     page = 1 if page < 1
     page = $scope.pages if page > $scope.pages
-    console.log 'setPage', page
     $scope.page = page
+    start = kPageSize*($scope.page-1)
+    end = start+kPageSize
+    $scope.paginatedTicks = $scope.ticks.slice start, end
 
 osp.filter 'human_date', -> (value) -> moment(value).format("DD.MM.YYYY HH:mm")
 osp.filter 'unnamed', -> (value) ->  if value then value else '(unnamed)'
