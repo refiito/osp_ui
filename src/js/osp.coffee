@@ -33,7 +33,11 @@ osp.controller("ControllerCntl", ($scope, $http, $routeParams) ->
   $scope.params = $routeParams
 
   $http.get('http://zeitl.com/api/controllers/' + $routeParams.controllerId + '/sensors').success((data)->
-    $scope.sensors = data
+    $scope.sensors = _.map(data, (sensor) ->
+        time = new Date(Date.parse(sensor.last_tick))
+        sensor.last_tick_time = time.getDate() + "." + time.getMonth() + "." + time.getFullYear() + " " + time.getHours() + ":" + time.getMinutes()
+        sensor
+      )
   )
 
   if $routeParams.sensorId
