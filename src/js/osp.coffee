@@ -27,9 +27,6 @@ osp.controller "ControllerController", ($scope, $http, $routeParams) ->
   osp.currentControllerId = $routeParams.controllerId
   $scope.lastTickTime = (sensor) -> moment(sensor.last_tick).format("DD.MM.YYYY HH:mm")
   $http.get('http://zeitl.com/api/controllers/' + $routeParams.controllerId + '/sensors').success (data) -> $scope.sensors = data
+  $scope.$watch 'ticks', -> ospMap.drawMap $scope.ticks
   if $routeParams.sensorId
-    $http.get('http://zeitl.com/api/sensors/' + $routeParams.sensorId + '/ticks').success((data)->
-      $scope.ticks = data.ticks
-    ).then(()->
-      ospMap.drawMap($scope.ticks)
-    )
+    $http.get('http://zeitl.com/api/sensors/' + $routeParams.sensorId + '/ticks').success (data) -> $scope.ticks = data.ticks
