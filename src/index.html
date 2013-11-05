@@ -44,7 +44,7 @@
         <div class="row">
           <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
-              <li ng-class="getActiveMenuItem(controller.id)" ng-repeat="controller in controllers">
+              <li ng-class="{active: isSelected(controller)}" ng-repeat="controller in controllers">
                 <a ng-href="#/controller/{{ controller.id }}">{{ controller.name }}</a>
               </li>
             </ul>
@@ -61,7 +61,7 @@
       <div class="col-md-3 pull-left">
         <div class="input-group">
           <span class="input-group-addon">Group:</span>
-          <input type="text" class="form-control" placeholder="Group name">
+          <input type="text" class="form-control" placeholder="Group name" ng-model="controller.name">
         </div>
       </div>
       
@@ -92,7 +92,7 @@
             </thead>
             <tbody>
               <tr ng-repeat="sensor in sensors">
-                <td><a ng-href="#controller/{{$routeParams.controllerId}}/sensor/{{sensor.id}}">{{ sensor.id }}</a></td>
+                <td><a ng-href="#controller/{{sensor.controller_id}}/sensor/{{sensor.id}}">{{ sensor.id }}</a></td>
                 <td>{{ lastTickTime(sensor) }}</td>
               </tr>
             </tbody>
