@@ -28,7 +28,9 @@ ospMap.putData = (labels, data, container, chart) ->
 	)
 
 	format = (n) ->
-		labels[n].format("DD.MM HH:mm")
+		#ret = labels[n]
+		#return if ret? then ret.format("DD.MM.YYYY HH:mm") else ''
+		labels[n]
 
 	xelm = document.querySelector(container + " .x_axis")
 	xelm.innerHTML = ""
@@ -37,7 +39,7 @@ ospMap.putData = (labels, data, container, chart) ->
 		graph: chart,
 		orientation: 'bottom',
 		element: xelm,
-		pixelsPerTick: 90,
+		ticks: 5,
 		tickFormat: format
 	)
 
@@ -53,30 +55,34 @@ ospMap.putData = (labels, data, container, chart) ->
 	)
 
 	chart.render()
-
+	true
 
 ospMap.drawMap = (data, range) ->
 	start = moment()
 	switch range
-		when 'Year' then start.subtract('years', 1)
-		when 'Quarter' then start.subtract('months', 3)
+		when 'Year' then start.subtract(1, 'year')
+		when 'Quarter' then start.subtract(3, 'months')
 		#Month
-		else start.subtract('months', 1)
+		else start.subtract(1, 'month')
 
-	dat = _.filter(data, (model) ->
-		start.isBefore(model.datetime)
-	)
+	start = start.startOf('hour').unix()
 
-	labels = _.map(data, (model) ->
-		moment(model.datetime)
-	)
+	labels = []
+	temp = []
 
-	temp = _.map(data, (model, idx) ->
-		{
-			x: idx
-			y: parseFloat(model.temperature)
-		}
-	)
+	step = 86400
+
+	indexed = _.indexBy(data, (m) -> moment(m.datetime).startOf('hour').unix())
+	console.log(indexed)
+
+	for i in [0..599] by 1
+		x_point = start + (i * step)
+		labels.push(x_point)
+		#model = _.find(data, (m) -> (moment(m.datetime).unix() > x_point) && (moment(m.datetime).unix() < (x_point + step)))
+		model = indexed[x_point]
+		y_point = if model? then model.temperature else null
+		console.log(y_point)
+		temp.push({x: x_point, y: y_point})
 
 	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
 
