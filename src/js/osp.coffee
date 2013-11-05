@@ -19,7 +19,6 @@ osp.controller "MainController", ($scope, $http) ->
       $scope.selectSensor(if $scope.sensors.length > 0 then $scope.sensors[0] else null)
 
   $scope.loadTicks = ->
-    console.log 'loadTicks'
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
       $scope.ticks = data.ticks
       ospMap.drawMap $scope.ticks, $scope.range
@@ -35,3 +34,12 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.lastTickTime = (sensor) -> $scope.formatDatetime(sensor.last_tick)
 
   $scope.formatDatetime = (value) -> moment(value).format("DD.MM.YYYY HH:mm")
+
+  $scope.controllerName = (controller) -> if controller.name then controller.name else '(unnamed)'
+
+  $scope.saveControllerName = (controller) ->
+    $http.put(host + '/api/controllers/' + $scope.selectedController.id, $scope.selectedController)
+    .success((data, textStatus, jqXHR) ->
+    ).error((data, textStatus, jqXHR) ->
+      # FIXME: error state
+    )
