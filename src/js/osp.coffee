@@ -1,18 +1,21 @@
 # Set up router
 osp = angular.module 'osp', ->
 
+host = 'http://zeitl.com'
+#host = 'http://localhost:8084'
+
 osp.controller "MainController", ($scope, $http) ->
-  $http.get('http://zeitl.com/api/controllers').success (data) -> $scope.controllers = data
+  $http.get(host + '/api/controllers').success (data) -> $scope.controllers = data
 
   $scope.range = 'Month'
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
-    $http.get('http://zeitl.com/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) -> $scope.sensors = data
+    $http.get(host + '/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) -> $scope.sensors = data
 
   $scope.loadTicks = ->
     console.log 'loadTicks'
-    $http.get('http://zeitl.com/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
+    $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
       $scope.ticks = data.ticks
       ospMap.drawMap $scope.ticks
 
