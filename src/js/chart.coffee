@@ -18,6 +18,7 @@ ospMap.putData = (labels, data, container, chart) ->
 		renderer: 'line',
 		height: 200,
 		width: 600,
+		min: 'auto',
 		series: [
 			{
 				data: data,
@@ -27,7 +28,7 @@ ospMap.putData = (labels, data, container, chart) ->
 	)
 
 	format = (n) ->
-		labels[n]
+		labels[n].format("DD.MM HH:mm")
 
 	xelm = document.querySelector(container + " .x_axis")
 	xelm.innerHTML = ""
@@ -36,7 +37,7 @@ ospMap.putData = (labels, data, container, chart) ->
 		graph: chart,
 		orientation: 'bottom',
 		element: xelm,
-		pixelsPerTick: 50,
+		pixelsPerTick: 90,
 		tickFormat: format
 	)
 
@@ -46,7 +47,7 @@ ospMap.putData = (labels, data, container, chart) ->
 	y_ticks = new Rickshaw.Graph.Axis.Y(
 		graph: chart,
 		orientation: 'left',
-		pixelsPerTick: 100,
+		pixelsPerTick: 20,
 		tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
 		element: yelm,
 	)
@@ -54,24 +55,33 @@ ospMap.putData = (labels, data, container, chart) ->
 	chart.render()
 
 
-ospMap.drawMap = (data) ->
-	ospMap.tempChart = null
+ospMap.drawMap = (data, range) ->
+	start = moment()
+	switch range
+		when 'Year' then start.subtract('years', 1)
+		when 'Quarter' then start.subtract('months', 3)
+		#Month
+		else start.subtract('months', 1)
 
-	labels = _.map(data, (model) ->
-		moment(model.datetime).format("HH:mm")
+	dat = _.filter(data, (model) ->
+		start.isBefore(model.datetime)
 	)
 
-	temp = _.map(data, (model, idx) ->
+	labels = _.map(data, (model) ->
+		moment(model.datetime)
+	)
+
+	temp = _.map(dat, (model, idx) ->
 		{
-			x: (idx + 1)
-			y: model.temperature
+			x: idx
+			y: parseFloat(model.temperature)
 		}
 	)
 
 	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
 
 	#hue
-	hue = _.map(data, (model, idx) ->
+	hue = _.map(dat, (model, idx) ->
 		{
 			x: (idx + 1)
 			y: parseFloat(model.sensor2)
@@ -80,16 +90,16 @@ ospMap.drawMap = (data) ->
 	ospMap.putData(labels, hue, '#hue', ospMap.hueChart)
 
 	#battery
-	battery = _.map(data, (model, idx) ->
+	battery = _.map(dat, (model, idx) ->
 		{
 			x: (idx + 1)
-			y: model.battery_voltage_visual
+			y: parseFloat(model.battery_voltage_visual)
 		}
 	)
 	ospMap.putData(labels, battery, '#battery', ospMap.batChart)
 	
 	#signal
-	signal = _.map(data, (model, idx) ->
+	signal = _.map(dat, (model, idx) ->
 		{
 			x: (idx + 1)
 			y: parseInt(model.radio_quality)
