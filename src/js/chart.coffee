@@ -62,7 +62,7 @@ ospMap.drawMap = (data, range) ->
 	battery = []
 	signal = []
 
-	_.each(data, (model, idx) ->
+	_.each(data.reverse(), (model, idx) ->
 		labels.push(moment(model.datetime).format("DD.MM HH:mm"))
 		temp.push({x: idx, y: parseFloat(model.temperature)})
 		hue.push({x: (idx + 1), y: parseFloat(model.sensor2)})
