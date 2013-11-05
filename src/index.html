@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="container" ng-controller="ControllersCntl">
+    <div class="container" ng-controller="ControllersController">
       <div class="starter-template">
         <div class="row">
           <div class="col-md-2">
@@ -91,12 +91,8 @@
             </thead>
             <tbody>
               <tr ng-repeat="sensor in sensors">
-                <td>
-                  <a ng-href="#controller/{{$routeParams.controllerId}}/sensor/{{sensor.id}}">{{ sensor.id }}</a>
-                </td>
-                <td>
-                  {{ sensor.last_tick_time }}
-                </td>
+                <td><a ng-href="#controller/{{$routeParams.controllerId}}/sensor/{{sensor.id}}">{{ sensor.id }}</a></td>
+                <td>{{ lastTickTime(sensor) }}</td>
               </tr>
             </tbody>
           </table>
