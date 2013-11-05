@@ -28,8 +28,7 @@ ospMap.putData = (labels, data, container, chart) ->
 	)
 
 	format = (n) ->
-		ret = labels[n]
-		return if ret then ret.format("DD.MM HH:mm") else ''
+		labels[n]
 
 	xelm = document.querySelector(container + " .x_axis")
 	xelm.innerHTML = ""
@@ -57,42 +56,21 @@ ospMap.putData = (labels, data, container, chart) ->
 
 
 ospMap.drawMap = (data, range) ->
-	labels = _.map(data, (model) ->
-		moment(model.datetime)
-	)
+	labels = []
+	temp = []
+	hue = []
+	battery = []
+	signal = []
 
-	temp = _.map(data, (model, idx) ->
-		{
-			x: idx
-			y: parseFloat(model.temperature)
-		}
+	_.each(data, (model, idx) ->
+		labels.push(moment(model.datetime).format("DD.MM HH:mm"))
+		temp.push({x: idx, y: parseFloat(model.temperature)})
+		hue.push({x: (idx + 1), y: parseFloat(model.sensor2)})
+		battery.push({x: (idx + 1), y: parseFloat(model.battery_voltage_visual)})
+		signal.push({x: (idx + 1), y: parseInt(model.radio_quality)})
 	)
 
 	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
-
-	#hue
-	hue = _.map(data, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseFloat(model.sensor2)
-		}
-	)
 	ospMap.putData(labels, hue, '#hue', ospMap.hueChart)
-
-	#battery
-	battery = _.map(data, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseFloat(model.battery_voltage_visual)
-		}
-	)
 	ospMap.putData(labels, battery, '#battery', ospMap.batChart)
-	
-	#signal
-	signal = _.map(data, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseInt(model.radio_quality)
-		}
-	)
 	ospMap.putData(labels, signal, '#signal', ospMap.sigChart)

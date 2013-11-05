@@ -21,7 +21,9 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
       $scope.ticks = data.ticks
+      #start = moment()
       ospMap.drawMap data.ticks, $scope.range
+      #console.log(moment().diff(start))
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor
