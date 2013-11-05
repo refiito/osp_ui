@@ -45,7 +45,7 @@
           <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
               <li ng-repeat="controller in controllers" ng-class="{active: selectedController==controller}">
-                <a href="#" ng-click="selectController(controller)" ng-bind="controllerName(controller)"></a>
+                <a href="#" ng-click="selectController(controller)" ng-bind="controller.name | unnamed"></a>
               </li>
             </ul>
           </div><!-- col -->
@@ -88,34 +88,34 @@
                   <tbody>
                     <tr ng-repeat="sensor in sensors">
                       <td><a href="" ng-click="selectSensor(sensor)">{{ sensor.id }}</a></td>
-                      <td>{{ lastTickTime(sensor) }}</td>
+                      <td ng-bind="sensor.last_tick | human_date"></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="col-md-9" ng-show="ticks">
+              <div class="col-md-9" ng-show="paginatedTicks.length > 0">
                 <div ng-show="!chartView">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Datetime</th>
-                      <th>Battery voltage</th>
-                      <th>Temperature</th>
-                      <th>Humidity</th>
-                      <th>Radio quality</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="tick in ticks">
-                      <td ng-bind="formatDatetime(tick.datetime)"></td>
-                      <td ng-bind="tick.battery_voltage_visual"></td>
-                      <td ng-bind="tick.temperature"></td>
-                      <td ng-bind="tick.sensor2"></td>
-                      <td ng-bind="tick.radio_quality"></td>
-                    </tr>
-                  </tbody>
-                </table>
-                </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Datetime</th>
+                        <th>Battery voltage</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>Radio quality</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="tick in paginatedTicks">
+                        <td ng-bind="tick.datetime | human_date"></td>
+                        <td ng-bind="tick.battery_voltage_visual"></td>
+                        <td ng-bind="tick.temperature"></td>
+                        <td ng-bind="tick.sensor2"></td>
+                        <td ng-bind="tick.radio_quality"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div><!-- list view -->
                 <div ng-show="chartView">
                   <h4>Temperature</h4>
                   <div id="temp" class="chart_container">
@@ -141,7 +141,7 @@
                     <div class="chart"></div>
                     <div class="x_axis"></div>
                   </div>
-                </div>
+                </div><!-- chart view -->
               </div>
             </div>
           </div>

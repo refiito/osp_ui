@@ -1,8 +1,9 @@
-# Set up router
 osp = angular.module 'osp', ->
 
 host = 'http://zeitl.com'
 #host = 'http://localhost:8084'
+
+kPageSize=100
 
 osp.controller "MainController", ($scope, $http) ->
   $http.get(host + '/api/controllers').success (data) ->
@@ -11,6 +12,8 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.range = 'Month'
   $scope.chartView = true
+  $scope.ticks = []
+  $scope.page = 1
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
@@ -20,10 +23,11 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
-      $scope.ticks = data.ticks
-      #start = moment()
-      ospMap.drawMap data.ticks, $scope.range
-      #console.log(moment().diff(start))
+      $scope.paginatedTicks = data.ticks.slice(0 * $scope.page, (kPageSize-1) * $scope.page)
+      $scope.pages = data.ticks.length / kPageSize
+      setTimeout(->
+        ospMap.drawMap data.ticks, $scope.range
+      , 0)
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor
@@ -33,15 +37,8 @@ osp.controller "MainController", ($scope, $http) ->
     $scope.range = range
     $scope.loadTicks()
 
-  $scope.lastTickTime = (sensor) -> $scope.formatDatetime(sensor.last_tick)
-
-  $scope.formatDatetime = (value) -> moment(value).format("DD.MM.YYYY HH:mm")
-
-  $scope.controllerName = (controller) -> if controller.name then controller.name else '(unnamed)'
-
   $scope.saveControllerName = (controller) ->
     $http.put(host + '/api/controllers/' + $scope.selectedController.id, $scope.selectedController)
-    .success((data, textStatus, jqXHR) ->
-    ).error((data, textStatus, jqXHR) ->
-      # FIXME: error state
-    )
+
+osp.filter 'human_date', -> (value) -> moment(value).format("DD.MM.YYYY HH:mm")
+osp.filter 'unnamed', -> (value) ->  if value then value else '(unnamed)'
