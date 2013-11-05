@@ -10,6 +10,7 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.range = 'Month'
   $scope.chartView = true
+  $scope.ticks = []
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
@@ -19,7 +20,8 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
-      $scope.ticks = data.ticks
+      $scope.ticks = _.range(data.ticks, 1, 100)
+      console.log '$scope.ticks', $scope.ticks.length
       ospMap.drawMap $scope.ticks, $scope.range
 
   $scope.selectSensor = (sensor) ->
