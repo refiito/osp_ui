@@ -28,7 +28,8 @@ ospMap.putData = (labels, data, container, chart) ->
 	)
 
 	format = (n) ->
-		labels[n].format("DD.MM HH:mm")
+		ret = labels[n]
+		return if ret then ret.format("DD.MM HH:mm") else ''
 
 	xelm = document.querySelector(container + " .x_axis")
 	xelm.innerHTML = ""
@@ -62,10 +63,6 @@ ospMap.drawMap = (data, range) ->
 		when 'Quarter' then start.subtract('months', 3)
 		#Month
 		else start.subtract('months', 1)
-
-	dat = _.filter(data, (model) ->
-		start.isBefore(model.datetime)
-	)
 
 	labels = _.map(data, (model) ->
 		moment(model.datetime)
