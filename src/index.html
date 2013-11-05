@@ -62,13 +62,12 @@
               <li class="active"><a href="#">Chart</a></li>
               <li><a href="#">List view</a></li>
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  Range <span class="caret"></span>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ range }}<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Year</a></li>
-                  <li><a href="#">Quarter</a></li>
-                  <li><a href="#">Month</a></li>
+                  <li><a href="#" ng-click="range='Year'">Year</a></li>
+                  <li><a href="#" ng-click="range='Quarter'">Quarter</a></li>
+                  <li><a href="#" ng-click="range='Month'">Month</a></li>
                 </ul>
               </li>
             </ul>

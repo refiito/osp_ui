@@ -4,6 +4,8 @@ osp = angular.module 'osp', ->
 osp.controller "MainController", ($scope, $http) ->
   $http.get('http://zeitl.com/api/controllers').success (data) -> $scope.controllers = data
 
+  $scope.range = 'Month'
+
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
     $http.get('http://zeitl.com/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) -> $scope.sensors = data
