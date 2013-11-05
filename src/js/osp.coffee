@@ -1,8 +1,3 @@
-# Get the context of the canvas element we want to select
-###
-
-###
-
 osp = angular.module('osp', ['ngRoute']).config(($routeProvider, $locationProvider) ->
   $routeProvider.when('/controller/:controllerId',
       templateUrl: 'controller.html',
@@ -16,6 +11,8 @@ osp = angular.module('osp', ['ngRoute']).config(($routeProvider, $locationProvid
   $locationProvider.html5Mode(false)
 )
 
+osp.currentControllerId = null
+
 osp.controller("ControllersCntl", ($scope, $http, $route, $routeParams, $location) ->
   $scope.controllers = []
 
@@ -26,16 +23,24 @@ osp.controller("ControllersCntl", ($scope, $http, $route, $routeParams, $locatio
   $http.get('http://zeitl.com/api/controllers').success((data)->
     $scope.controllers = data
   )
+
+  $scope.getActiveMenuItem = (controller_id) ->
+    console.log(controller_id)
+    console.log($scope.currentControllerId)
+    if controller_id == osp.currentControllerId
+      'active'
+    else
+      ''
 )
 
 osp.controller("ControllerCntl", ($scope, $http, $routeParams) ->
   $scope.name = "ControllerCntl"
   $scope.params = $routeParams
+  osp.currentControllerId = $routeParams.controllerId
 
   $http.get('http://zeitl.com/api/controllers/' + $routeParams.controllerId + '/sensors').success((data)->
     $scope.sensors = _.map(data, (sensor) ->
-        time = new Date(Date.parse(sensor.last_tick))
-        sensor.last_tick_time = time.getDate() + "." + time.getMonth() + "." + time.getFullYear() + " " + time.getHours() + ":" + time.getMinutes()
+        sensor.last_tick_time = moment(sensor.last_tick).format("DD.MM.YYYY HH:mm")
         sensor
       )
   )
