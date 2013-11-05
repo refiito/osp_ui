@@ -92,7 +92,7 @@
             </thead>
             <tbody>
               <tr ng-repeat="sensor in sensors">
-                <td><a ng-href="#controller/{{$routeParams.controllerId}}/sensor/{{sensor.id}}">{{ sensor.id }}</a></td>
+                <td><a ng-href="#controller/{{sensor.controller_id}}/sensor/{{sensor.id}}">{{ sensor.id }}</a></td>
                 <td>{{ lastTickTime(sensor) }}</td>
               </tr>
             </tbody>
