@@ -3,7 +3,7 @@ osp = angular.module 'osp', ->
 host = 'http://zeitl.com'
 #host = 'http://localhost:8084'
 
-kPageSize=20
+kPageSize = 20
 
 osp.controller "MainController", ($scope, $http) ->
   $http.get(host + '/api/controllers').success (data) ->
@@ -25,7 +25,7 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
       $scope.ticks = data.ticks
-      $scope.paginatedTicks = data.ticks.slice(0, kPageSize-1)
+      $scope.paginatedTicks = data.ticks.slice 0, kPageSize
       $scope.pages = Math.floor data.ticks.length / kPageSize
       $scope.pages += 1 if data.ticks.length % kPageSize
       $scope.page = 1
