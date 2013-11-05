@@ -5,13 +5,18 @@ host = 'http://zeitl.com'
 #host = 'http://localhost:8084'
 
 osp.controller "MainController", ($scope, $http) ->
-  $http.get(host + '/api/controllers').success (data) -> $scope.controllers = data
+  $http.get(host + '/api/controllers').success (data) ->
+    $scope.controllers = data
+    $scope.selectController(if $scope.controllers.length > 0 then $scope.controllers[0] else null)
 
   $scope.range = 'Month'
+  $scope.chartView = true
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
-    $http.get(host + '/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) -> $scope.sensors = data
+    $http.get(host + '/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) ->
+      $scope.sensors = data
+      $scope.selectSensor(if $scope.sensors.length > 0 then $scope.sensors[0] else null)
 
   $scope.loadTicks = ->
     console.log 'loadTicks'
