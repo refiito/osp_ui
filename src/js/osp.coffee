@@ -22,12 +22,14 @@ osp.controller "MainController", ($scope, $http) ->
       $scope.selectSensor(if $scope.sensors.length > 0 then $scope.sensors[0] else null)
 
   $scope.loadTicks = ->
+    $scope.processing = true
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
       $scope.paginatedTicks = data.ticks.slice(0 * $scope.page, (kPageSize-1) * $scope.page)
       $scope.pages = data.ticks.length / kPageSize
       setTimeout(->
         ospMap.drawMap data.ticks, $scope.range
       , 0)
+      $scope.processing = false
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor
