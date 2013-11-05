@@ -18,16 +18,17 @@ ospMap.putData = (labels, data, canvas, chart_point) ->
 				data : data
 			}
 		]
-		pointDot: false,
-		animation: false,
-		scaleShowLabels: false
 
-	chart_point = new Chart(document.getElementById(canvas).getContext("2d")).Line(data)
+	opts =
+		pointDot: false,
+		animation: false
+
+	chart_point = new Chart(document.getElementById(canvas).getContext("2d")).Line(data, opts)
 	
 
 ospMap.drawMap = (data) ->
-	labels = _.map(data, (model) ->
-		""
+	labels = _.map(data, (model, idx) ->
+		if idx % 10 is 0 then moment(model.datetime).format("HH:mm") else ''
 	)
 
 	#temp
