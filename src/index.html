@@ -45,7 +45,7 @@
           <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
               <li ng-repeat="controller in controllers" ng-class="{active: selectedController==controller}">
-                <a href="#" ng-click="selectController(controller)" ng-bind="controllerName(controller)"></a>
+                <a href="#" ng-click="selectController(controller)" ng-bind="controller.name | unnamed"></a>
               </li>
             </ul>
           </div><!-- col -->
@@ -88,7 +88,7 @@
                   <tbody>
                     <tr ng-repeat="sensor in sensors">
                       <td><a href="" ng-click="selectSensor(sensor)">{{ sensor.id }}</a></td>
-                      <td>{{ lastTickTime(sensor) }}</td>
+                      <td ng-bind="sensor.last_tick | human_date"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -107,7 +107,7 @@
                   </thead>
                   <tbody>
                     <tr ng-repeat="tick in paginatedTicks">
-                      <td ng-bind="formatDatetime(tick.datetime)"></td>
+                      <td ng-bind="tick.datetime | human_date"></td>
                       <td ng-bind="tick.battery_voltage_visual"></td>
                       <td ng-bind="tick.temperature"></td>
                       <td ng-bind="tick.sensor2"></td>

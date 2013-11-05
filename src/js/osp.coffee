@@ -11,6 +11,7 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.range = 'Month'
   $scope.chartView = true
   $scope.ticks = []
+  $scope.page = 1
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
@@ -20,7 +21,7 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
-      $scope.paginatedTicks = data.ticks.slice(0, 99)
+      $scope.paginatedTicks = data.ticks.slice(0 * $scope.page, 99 * $scope.page)
       ospMap.drawMap data.ticks, $scope.range
 
   $scope.selectSensor = (sensor) ->
@@ -31,11 +32,8 @@ osp.controller "MainController", ($scope, $http) ->
     $scope.range = range
     $scope.loadTicks()
 
-  $scope.lastTickTime = (sensor) -> $scope.formatDatetime(sensor.last_tick)
-
-  $scope.formatDatetime = (value) -> moment(value).format("DD.MM.YYYY HH:mm")
-
-  $scope.controllerName = (controller) -> if controller.name then controller.name else '(unnamed)'
-
   $scope.saveControllerName = (controller) ->
     $http.put(host + '/api/controllers/' + $scope.selectedController.id, $scope.selectedController)
+
+osp.filter 'human_date', -> (value) -> moment(value).format("DD.MM.YYYY HH:mm")
+osp.filter 'unnamed', -> (value) ->  if value then value else '(unnamed)'
