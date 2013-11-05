@@ -39,93 +39,89 @@
       </div>
     </div>
 
-    <div class="container" ng-controller="ControllersController">
+    <div class="container" ng-controller="MainController">
       <div class="starter-template">
         <div class="row">
           <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked">
-              <li ng-class="{active: isSelected(controller)}" ng-repeat="controller in controllers">
-                <a ng-href="#/controller/{{ controller.id }}">{{ controller.name }}</a>
+              <li ng-repeat="controller in controllers" ng-class="{active: selectedController==controller}">
+                <a href="#" ng-click="selectController(controller)">{{ controller.name }}</a>
               </li>
             </ul>
           </div><!-- col -->
           <div class="col-md-10">
-            <div ng-view></div>
+            <div class="row">
+            <div class="col-md-3 pull-left">
+              <div class="input-group">
+                <span class="input-group-addon">Group:</span>
+                <input type="text" class="form-control" placeholder="Group name" ng-model="controller.name">
+              </div>
+            </div>
+            
+            <ul class="nav nav-tabs pull-right">
+              <li class="active"><a href="#">Chart</a></li>
+              <li><a href="#">List view</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  Range <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Year</a></li>
+                  <li><a href="#">Quarter</a></li>
+                  <li><a href="#">Month</a></li>
+                </ul>
+              </li>
+            </ul>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row top-15">
+              <div class="col-md-3">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Sensor</th>
+                      <th>Last reading</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="sensor in sensors">
+                      <td><a href="" ng-click="selectSensor(sensor)">{{ sensor.id }}</a></td>
+                      <td>{{ lastTickTime(sensor) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-9">
+                <h4>Temperature</h4>
+                <div id="temp" class="chart_container">
+                  <div class="y_axis"></div>
+                  <div class="chart"></div>
+                  <div class="x_axis"></div>
+                </div>
+                <h4>Humidity</h4>
+                <div id="hue" class="chart_container">
+                  <div class="y_axis"></div>
+                  <div class="chart"></div>
+                  <div class="x_axis"></div>
+                </div>
+                <h4>Battery voltage</h4>
+                <div id="battery" class="chart_container">
+                  <div class="y_axis"></div>
+                  <div class="chart"></div>
+                  <div class="x_axis"></div>
+                </div>
+                <h4>Signal strenght</h4>
+                <div id="signal" class="chart_container">
+                  <div class="y_axis"></div>
+                  <div class="chart"></div>
+                  <div class="x_axis"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div><!-- row -->
       </div><!-- starter-template -->
     </div><!-- container -->
-
-    <script type="text/ng-template" id="controller.html">
-      <div class="row">
-      <div class="col-md-3 pull-left">
-        <div class="input-group">
-          <span class="input-group-addon">Group:</span>
-          <input type="text" class="form-control" placeholder="Group name" ng-model="controller.name">
-        </div>
-      </div>
-      
-      <ul class="nav nav-tabs pull-right">
-        <li class="active"><a href="javascript:void(0);">Chart</a></li>
-        <li><a href="javascript:void(0);">List view</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
-            Range <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="javascript:void(0);">Year</a></li>
-            <li><a href="javascript:void(0);">Quarter</a></li>
-            <li><a href="javascript:void(0);">Month</a></li>
-          </ul>
-        </li>
-      </ul>
-      </div>
-      <div class="clearfix"></div>
-      <div class="row top-15">
-        <div class="col-md-3">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Sensor</th>
-                <th>Last reading</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="sensor in sensors">
-                <td><a ng-href="#controller/{{sensor.controller_id}}/sensor/{{sensor.id}}">{{ sensor.id }}</a></td>
-                <td>{{ lastTickTime(sensor) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-md-9">
-          <h4>Temperature</h4>
-          <div id="temp" class="chart_container">
-            <div class="y_axis"></div>
-            <div class="chart"></div>
-            <div class="x_axis"></div>
-          </div>
-          <h4>Humidity</h4>
-          <div id="hue" class="chart_container">
-            <div class="y_axis"></div>
-            <div class="chart"></div>
-            <div class="x_axis"></div>
-          </div>
-          <h4>Battery voltage</h4>
-          <div id="battery" class="chart_container">
-            <div class="y_axis"></div>
-            <div class="chart"></div>
-            <div class="x_axis"></div>
-          </div>
-          <h4>Signal strenght</h4>
-          <div id="signal" class="chart_container">
-            <div class="y_axis"></div>
-            <div class="chart"></div>
-            <div class="x_axis"></div>
-          </div>
-        </div>
-      </div>
-    </script>    
 
     <script src="js/lib/d3.v2.js" type="text/javascript"></script>
     <script src="js/lib/rickshaw.js" type="text/javascript"></script>
