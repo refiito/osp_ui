@@ -1,19 +1,32 @@
-window.ospGMap = {}
-window.ospGMap.map = null
+ospGMap = {}
 
-window.ospGMap.placeMarker = (event) ->
-  marker = new google.maps.Marker(
-    position: event.LatLng,
-    map: window.ospGMap.map
-  )
+ospGMap.map = null
 
 initialize = () ->
+  myLatlng = new google.maps.LatLng(-25.363882,131.044922)
   mapOptions =
-    zoom: 8,
-    center: new google.maps.LatLng(-34.397, 150.644),
+    zoom: 4,
+    center: myLatlng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
+  
+  ospGMap.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions)
 
-  window.ospGMap.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions)
-  google.maps.event.addListener(window.ospGMap.map, 'click', window.ospGMap.placeMarker)
+  true
+
+ospGMap.placeMarker = (location) ->
+  marker = new google.maps.Marker(
+    position: location,
+    map: ospGMap.map
+  )
+
+ospGMap.enablePlacement = () ->
+  google.maps.event.addListener(ospGMap.map, 'click', (event) ->
+    ospGMap.placeMarker(event.latLng)
+  )
+  true
+
+ospGMap.disablePlacement = () ->
+  google.maps.event.clearListeners(map, 'bounds_changed')
+  true
 
 google.maps.event.addDomListener(window, 'load', initialize)

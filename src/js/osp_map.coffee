@@ -7,11 +7,11 @@ osp_map.controller "MainController", ($scope, $http) ->
   $scope.selectController = (controller) ->
     console.log 'selectController', controller
     $scope.selectedController = controller
-    $http.get('http://zeitl.com/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) -> $scope.sensors = data
-
-  $scope.selectSensor = (sensor) ->
-    console.log 'selectSensor', sensor
-    $scope.selectedSensor = sensor
-    $http.get('http://zeitl.com/api/sensors/' + $scope.selectedSensor.id + '/ticks').success (data) -> $scope.setTicks(data)
+    $http.get('http://zeitl.com/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) -> $scope.drawMarkers(data)
 
   $scope.lastTickTime = (sensor) -> moment(sensor.last_tick).format("DD.MM.YYYY HH:mm")
+
+  $scope.drawMarkers = (data) ->
+    #$scope.ticks = paginated.ticks
+    #ospMap.drawMap $scope.ticks
+    true
