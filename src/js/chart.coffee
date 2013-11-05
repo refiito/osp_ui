@@ -26,7 +26,7 @@ ospMap.drawMap = (data) ->
 
 	#temp
 	temp = _.map(data, (model) ->
-		model.sensor1
+		model.temperature
 	)
 	ospMap.putData(labels, temp, 'temp')
 
@@ -39,7 +39,7 @@ ospMap.drawMap = (data) ->
 	#battery
 
 	battery = _.map(data, (model) ->
-		model.battery_voltage
+		model.battery_voltage_visual
 	)
 	ospMap.putData(labels, battery, 'battery')
 	
