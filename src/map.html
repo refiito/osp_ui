@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div class="container" ng-controller="ControllersController">
+    <div class="container" ng-controller="MainController">
       <div class="starter-template">
         <div class="row">
           <div class="col-md-2">
@@ -50,19 +50,15 @@
             </ul>
           </div><!-- col -->
           <div class="col-md-10">
-            <div ng-view></div>
+            <div class="row top-15">
+              <div class="col-md-12">
+                <div id="map-canvas"></div>
+              </div>
+            </div>
           </div>
         </div><!-- row -->
       </div><!-- starter-template -->
     </div><!-- container -->
-
-    <script type="text/ng-template" id="controller.html">
-      <div class="row top-15">
-        <div class="col-md-12">
-          <div id="map-canvas"></div>
-        </div>
-      </div>
-    </script>    
 
     <script src="js/lib/moment.min.js" type="text/javascript"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js" type="text/javascript"></script>
