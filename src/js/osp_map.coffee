@@ -12,6 +12,7 @@ osp_map.controller "MainController", ($scope, $http) ->
   $scope.lastTickTime = (sensor) -> moment(sensor.last_tick).format("DD.MM.YYYY HH:mm")
 
   $scope.drawMarkers = (data) ->
+    $scope.sensors = data
     #$scope.ticks = paginated.ticks
     #ospMap.drawMap $scope.ticks
     true
