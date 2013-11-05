@@ -56,7 +56,7 @@ ospMap.putData = (labels, data, container, chart) ->
 	chart.render()
 
 
-ospMap.drawMap = (data, range) ->
+ospMap.drawMap = (data, done) ->
 	labels = []
 	temp = []
 	hue = []
@@ -75,3 +75,9 @@ ospMap.drawMap = (data, range) ->
 	ospMap.putData(labels, hue, '#hue', ospMap.hueChart)
 	ospMap.putData(labels, battery, '#battery', ospMap.batChart)
 	ospMap.putData(labels, signal, '#signal', ospMap.sigChart)
+
+	if done?
+		console.log('calling')
+		done()
+
+	true
