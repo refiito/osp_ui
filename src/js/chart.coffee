@@ -6,6 +6,8 @@ ospMap.batChart = null
 ospMap.sigChart = null
 
 ospMap.putData = (labels, data, container, chart) ->
+	return if data.length == 0
+
 	chart = null
 
 	chart = new Rickshaw.Graph(
