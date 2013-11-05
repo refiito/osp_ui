@@ -59,8 +59,8 @@
             </div>
             
             <ul class="nav nav-tabs pull-right">
-              <li class="active"><a href="#">Chart</a></li>
-              <li><a href="#">List view</a></li>
+              <li ng-class="{active: chartView}"><a href="#" ng-click="chartView=true">Chart</a></li>
+              <li ng-class="{active: !chartView}"><a href="#" ng-click="chartView=false">List view</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                   <span ng-bind="range"></span>
@@ -93,29 +93,53 @@
                 </table>
               </div>
               <div class="col-md-9" ng-show="ticks">
-                <h4>Temperature</h4>
-                <div id="temp" class="chart_container">
-                  <div class="y_axis"></div>
-                  <div class="chart"></div>
-                  <div class="x_axis"></div>
+                <div ng-show="!chartView">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Datetime</th>
+                      <th>Battery voltage</th>
+                      <th>Temperature</th>
+                      <th>Humidity</th>
+                      <th>Radio quality</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="tick in ticks">
+                      <td ng-bind="formatDatetime(tick.datetime)"></td>
+                      <td ng-bind="tick.battery_voltage_visual"></td>
+                      <td ng-bind="tick.temperature"></td>
+                      <td ng-bind="tick.sensor2"></td>
+                      <td ng-bind="tick.radio_quality"></td>
+                    </tr>
+                  </tbody>
+                </table>
                 </div>
-                <h4>Humidity</h4>
-                <div id="hue" class="chart_container">
-                  <div class="y_axis"></div>
-                  <div class="chart"></div>
-                  <div class="x_axis"></div>
-                </div>
-                <h4>Battery voltage</h4>
-                <div id="battery" class="chart_container">
-                  <div class="y_axis"></div>
-                  <div class="chart"></div>
-                  <div class="x_axis"></div>
-                </div>
-                <h4>Signal strenght</h4>
-                <div id="signal" class="chart_container">
-                  <div class="y_axis"></div>
-                  <div class="chart"></div>
-                  <div class="x_axis"></div>
+                <div ng-show="chartView">
+                  <h4>Temperature</h4>
+                  <div id="temp" class="chart_container">
+                    <div class="y_axis"></div>
+                    <div class="chart"></div>
+                    <div class="x_axis"></div>
+                  </div>
+                  <h4>Humidity</h4>
+                  <div id="hue" class="chart_container">
+                    <div class="y_axis"></div>
+                    <div class="chart"></div>
+                    <div class="x_axis"></div>
+                  </div>
+                  <h4>Battery voltage</h4>
+                  <div id="battery" class="chart_container">
+                    <div class="y_axis"></div>
+                    <div class="chart"></div>
+                    <div class="x_axis"></div>
+                  </div>
+                  <h4>Signal strenght</h4>
+                  <div id="signal" class="chart_container">
+                    <div class="y_axis"></div>
+                    <div class="chart"></div>
+                    <div class="x_axis"></div>
+                  </div>
                 </div>
               </div>
             </div>
