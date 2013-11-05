@@ -10,10 +10,7 @@ osp = angular.module('osp', ['ngRoute']).config ($routeProvider, $locationProvid
 
 osp.controller "ControllersController", ($scope, $http, $route, $routeParams, $location) ->
   $scope.controllers = []
-  $scope.$route = $route
-  $scope.$location = $location
-  $scope.$routeParams = $routeParams
-  $http.get('http://zeitl.com/api/controllers').success (data)-> $scope.controllers = data
+  $http.get('http://zeitl.com/api/controllers').success (data) -> $scope.controllers = data
   $scope.isSelected = (controller) -> osp.currentControllerId is controller.id
 
 osp.controller "ControllerController", ($scope, $http, $routeParams) ->
