@@ -3,6 +3,8 @@ osp = angular.module 'osp', ->
 host = 'http://zeitl.com'
 #host = 'http://localhost:8084'
 
+kPageSize=100
+
 osp.controller "MainController", ($scope, $http) ->
   $http.get(host + '/api/controllers').success (data) ->
     $scope.controllers = data
@@ -21,8 +23,11 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
-      $scope.paginatedTicks = data.ticks.slice(0 * $scope.page, 99 * $scope.page)
-      ospMap.drawMap data.ticks, $scope.range
+      $scope.paginatedTicks = data.ticks.slice(0 * $scope.page, (kPageSize-1) * $scope.page)
+      $scope.pages = data.ticks.length / kPageSize
+      setTimeout(->
+        ospMap.drawMap data.ticks, $scope.range
+      , 0)
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor
