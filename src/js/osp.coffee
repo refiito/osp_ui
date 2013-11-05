@@ -21,7 +21,7 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
       $scope.ticks = data.ticks
-      ospMap.drawMap $scope.ticks, $scope.range
+      ospMap.drawMap data.ticks, $scope.range
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor
