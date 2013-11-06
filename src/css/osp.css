@@ -50,3 +50,6 @@ table {
 #selected-range, #selected-range span {
 	vertical-align: bottom;
 }
+.nav-pills li {
+	min-width: 160px;
+}

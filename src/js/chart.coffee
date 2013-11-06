@@ -17,7 +17,7 @@ ospMap.putData = (labels, data, container, chart) ->
 		element: elm,
 		renderer: 'line',
 		height: 200,
-		width: 600,
+		width: 750,
 		min: 'auto',
 		series: [
 			data: data,
