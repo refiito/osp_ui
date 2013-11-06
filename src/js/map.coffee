@@ -3,6 +3,11 @@ window.ospGMap = ospGMap
 
 ospGMap.map = null
 
+ospGMap.currentSensor = null
+ospGMap.saveSensorCallback = null
+
+ospGMap.markers = []
+
 initialize = () ->
   initial_center = new google.maps.LatLng(-25.363882,131.044922)
 
@@ -24,10 +29,17 @@ initialize = () ->
   true
 
 ospGMap.placeMarker = (location) ->
-  marker = new google.maps.Marker(
-    position: location,
-    map: ospGMap.map
-  )
+  if ospGMap.currentSensor?
+    ospGMap.currentSensor.lat = location.lat().toString()
+    ospGMap.currentSensor.lng = location.lng().toString()
+    marker = new google.maps.Marker(
+      position: location,
+      map: ospGMap.map
+    )
+    ospGMap.markers.push(marker)
+    if ospGMap.saveSensorCallback?
+      ospGMap.saveSensorCallback(ospGMap.currentSensor)
+  ospGMap.currentSensor = null
 
 ospGMap.enablePlacement = () ->
   google.maps.event.addListener(ospGMap.map, 'click', (event) ->
@@ -36,7 +48,25 @@ ospGMap.enablePlacement = () ->
   true
 
 ospGMap.disablePlacement = () ->
-  google.maps.event.clearListeners(map, 'bounds_changed')
+  google.maps.event.clearListeners(ospGMap.map, 'click')
   true
+
+ospGMap.drawMap = (sensors) ->
+  ospGMap.clearMarkers()
+  _.each(sensors, (sensor) ->
+    if sensor.lng? && sensor.lat?
+      location = new google.maps.LatLng(parseFloat(sensor.lat),parseFloat(sensor.lng))
+      marker = new google.maps.Marker(
+        position: location,
+        map: ospGMap.map
+      )
+      ospGMap.markers.push(marker)
+  )
+
+ospGMap.clearMarkers = ->
+  _.each(ospGMap.markers, (marker) ->
+    marker.setMap(null)
+  )
+  ospGMap.markers = []
 
 google.maps.event.addDomListener(window, 'load', initialize)
