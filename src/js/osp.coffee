@@ -68,6 +68,12 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.selectRange = (range) ->
     $scope.range = range
     $scope.chartStart = moment($scope.chartEnd).subtract($scope.correctAmount(1), $scope.getUnitForRage())
+    switch $scope.range
+      when 'Year' then $scope.dotsPerDay = 1
+      when 'Quarter' then $scope.dotsPerDay = 4
+      when 'Month' then $scope.dotsPerDay = 12
+      when 'Biweek' then $scope.dotsPerDay = 24
+      else $scope.dotsPerDay = null
     $scope.loadTicks()
 
   $scope.saveControllerName = (controller) ->
