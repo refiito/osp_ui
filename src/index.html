@@ -19,7 +19,6 @@
   </head>
 
   <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -41,6 +40,10 @@
 
     <div class="container" ng-controller="MainController">
       <div class="starter-template">
+        <div class="alert alert-danger alert-dismissable" ng-show='errorMsg'>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="errorMsg=null">&times;</button>
+          <span ng-bind='errorMsg'></span>
+        </div>
         <div class="row">
           <div class="col-md-12">
             <ul class="nav nav-pills">
@@ -62,8 +65,8 @@
               </div>
               
               <ul class="nav nav-tabs pull-right">
-                <li ng-class="{active: chartView}"><a href="#" ng-click="chartView=true">Chart</a></li>
-                <li ng-class="{active: !chartView}"><a href="#" ng-click="chartView=false">List view</a></li>
+                <li ng-class="{active: chartView}"><a href="#" ng-click="toggleChartView(true)">Chart</a></li>
+                <li ng-class="{active: !chartView}"><a href="#" ng-click="toggleChartView(false)">List view</a></li>
                 <li class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <span ng-bind="range"></span>

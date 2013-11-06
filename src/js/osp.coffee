@@ -18,6 +18,7 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.chartStart = moment().subtract(1, 'month')
   $scope.chartEnd = moment()
   $scope.dotsPerDay = 12
+  $scope.errorMsg = null
 
   $scope.getUnitForRage = ->
     if $scope.range == 'Biweek'
@@ -38,7 +39,7 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.slideRange = (amount) ->
     $scope.chartStart.add($scope.correctAmount(amount), $scope.getUnitForRage())
     $scope.chartEnd.add($scope.correctAmount(amount), $scope.getUnitForRage())
-    $scope.loadTicks()
+    $scope.loadSensorData()
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
@@ -47,23 +48,48 @@ osp.controller "MainController", ($scope, $http) ->
       $scope.selectSensor(if $scope.sensors.length > 0 then $scope.sensors[0] else null)
 
   $scope.loadTicks = ->
-    $scope.processing = true
-    $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success (data) ->
+    $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success((data) ->
       $scope.ticks = data.ticks
       $scope.paginatedTicks = data.ticks.slice 0, kPageSize
       $scope.pages = Math.floor data.ticks.length / kPageSize
       $scope.pages += 1 if data.ticks.length % kPageSize
       $scope.page = 1
-      setTimeout(->
-        ospMap.drawMap data.ticks, () ->
-          $scope.$apply(()->
-            $scope.processing = false
-          )
-      , 0)
+    ).error((data, status, headers, config) ->
+      $scope.errorMsg = "Couldn't load list data from backend."
+    )
+
+  $scope.loadSensorData = ->
+    if $scope.chartView
+      $scope.loadDots()
+    else
+      $scope.loadTicks()
+
+  $scope.loadDots = ->
+    $scope.processing = true
+    $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + 
+      '/dots?start=' + $scope.chartStart.unix() + 
+      '&end=' + $scope.chartEnd.unix() +
+      '&dots_per_day=' + $scope.dotsPerDay).success((data) ->
+      if data?
+        setTimeout(->
+          ospMap.drawMap data.dots, () ->
+            $scope.$apply(()->
+              $scope.processing = false
+            )
+        , 0)
+      else
+        $scope.errorMsg = "Backend didn't return any usable data"
+    ).error((data, status, headers, config) ->
+      $scope.errorMsg = "Couldn't load chart data from backend."
+    )
 
   $scope.selectSensor = (sensor) ->
     $scope.selectedSensor = sensor
-    $scope.loadTicks()
+    $scope.loadSensorData()
+
+  $scope.toggleChartView = (active) ->
+    $scope.chartView = active
+    $scope.loadSensorData()
 
   $scope.selectRange = (range) ->
     $scope.range = range
@@ -74,7 +100,7 @@ osp.controller "MainController", ($scope, $http) ->
       when 'Month' then $scope.dotsPerDay = 12
       when 'Biweek' then $scope.dotsPerDay = 24
       else $scope.dotsPerDay = null
-    $scope.loadTicks()
+    $scope.loadSensorData()
 
   $scope.saveControllerName = (controller) ->
     $http.put(host + '/api/controllers/' + $scope.selectedController.id, $scope.selectedController)
