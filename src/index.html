@@ -19,7 +19,6 @@
   </head>
 
   <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -32,7 +31,7 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#map">Map</a></li>
+            <!--<li><a href="#map">Map</a></li>-->
             <li class="active"><a href="#sensor">Sensor data</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -41,8 +40,12 @@
 
     <div class="container" ng-controller="MainController">
       <div class="starter-template">
+        <div class="alert alert-danger alert-dismissable" ng-show='errorMsg'>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="errorMsg=null">&times;</button>
+          <span ng-bind='errorMsg'></span>
+        </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-11">
             <ul class="nav nav-pills">
               <li ng-repeat="controller in controllers" class="text-center" ng-class="{active: selectedController==controller}">
                 <a href="#" ng-click="selectController(controller)" ng-bind="controller.name | unnamed"></a>
@@ -51,7 +54,7 @@
           </div><!-- col -->
         </div>
         <div class="row top-15">
-          <div class="col-md-12" ng-show="selectedController">
+          <div class="col-md-11" ng-show="selectedController">
             <div class="row">
               <div class="col-md-4 pull-left">
                 <div class="input-group controller-name">
@@ -62,8 +65,8 @@
               </div>
               
               <ul class="nav nav-tabs pull-right">
-                <li ng-class="{active: chartView}"><a href="#" ng-click="chartView=true">Chart</a></li>
-                <li ng-class="{active: !chartView}"><a href="#" ng-click="chartView=false">List view</a></li>
+                <li ng-class="{active: chartView}"><a href="#" ng-click="toggleChartView(true)">Chart</a></li>
+                <li ng-class="{active: !chartView}"><a href="#" ng-click="toggleChartView(false)">List view</a></li>
                 <li class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <span ng-bind="range"></span>
@@ -82,7 +85,7 @@
             <div class="clearfix"></div>
             <div class="row top-15">
               <div class="col-md-3">
-                <table class="table table-striped">
+                <table class="table table-striped" id="sensors-list">
                   <thead>
                     <tr>
                       <th>Sensor</th>
@@ -90,14 +93,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="sensor in sensors" ng-class="{success: selectedSensor==sensor}">
-                      <td><a href="" ng-click="selectSensor(sensor)">{{ sensor.id }}</a></td>
+                    <tr ng-repeat="sensor in sensors" ng-class="{success: selectedSensor==sensor}" ng-click="selectSensor(sensor)">
+                      <td><a href="javascript:void(0)">{{ sensor.id }}</a></td>
                       <td ng-bind="sensor.last_tick | human_date"></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="col-md-9" ng-show="paginatedTicks.length > 0">
+              <div class="col-md-9">
                 <div ng-show="!chartView">
                   <table>
                     <thead>
