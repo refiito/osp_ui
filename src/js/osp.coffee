@@ -3,7 +3,7 @@ osp = angular.module 'osp', ->
 host = 'http://zeitl.com'
 #host = 'http://localhost:8084'
 
-kPageSize = 20
+kPageSize = 50
 
 osp.controller "MainController", ($scope, $http) ->
   $http.get(host + '/api/controllers').success (data) ->
@@ -48,12 +48,14 @@ osp.controller "MainController", ($scope, $http) ->
       $scope.selectSensor(if $scope.sensors.length > 0 then $scope.sensors[0] else null)
 
   $scope.loadTicks = ->
-    $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + '/ticks?range=' + $scope.range).success((data) ->
-      $scope.ticks = data.ticks
-      $scope.paginatedTicks = data.ticks.slice 0, kPageSize
-      $scope.pages = Math.floor data.ticks.length / kPageSize
-      $scope.pages += 1 if data.ticks.length % kPageSize
-      $scope.page = 1
+    $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + 
+      '/ticks?start=' + $scope.chartStart.unix() +
+      '&end=' + $scope.chartEnd.unix()).success((data) ->
+        $scope.ticks = data
+        $scope.paginatedTicks = data.slice 0, kPageSize
+        $scope.pages = Math.floor data.length / kPageSize
+        $scope.pages += 1 if data.length % kPageSize
+        $scope.page = 1
     ).error((data, status, headers, config) ->
       $scope.errorMsg = "Couldn't load list data from backend."
     )
@@ -70,15 +72,15 @@ osp.controller "MainController", ($scope, $http) ->
       '/dots?start=' + $scope.chartStart.unix() + 
       '&end=' + $scope.chartEnd.unix() +
       '&dots_per_day=' + $scope.dotsPerDay).success((data) ->
-      if data?
-        setTimeout(->
-          ospMap.drawMap data.dots, () ->
-            $scope.$apply(()->
-              $scope.processing = false
-            )
-        , 0)
-      else
-        $scope.errorMsg = "Backend didn't return any usable data"
+        if data?
+          setTimeout(->
+            ospMap.drawMap data, () ->
+              $scope.$apply(()->
+                $scope.processing = false
+              )
+          , 0)
+        else
+          $scope.errorMsg = "Backend didn't return any usable data"
     ).error((data, status, headers, config) ->
       $scope.errorMsg = "Couldn't load chart data from backend."
     )
