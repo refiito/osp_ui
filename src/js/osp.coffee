@@ -3,7 +3,7 @@ osp = angular.module 'osp', ->
 host = 'http://zeitl.com'
 #host = 'http://localhost:8084'
 
-kPageSize = 20
+kPageSize = 50
 
 osp.controller "MainController", ($scope, $http) ->
   $http.get(host + '/api/controllers').success (data) ->
