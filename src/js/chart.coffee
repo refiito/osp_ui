@@ -62,12 +62,14 @@ ospMap.drawMap = (data, done) ->
 	battery = []
 	signal = []
 
-	_.each(data.reverse().slice(0, 599), (model, idx) ->
+	_.each(data, (model, idx) ->
+		console.log(model)
+
 		labels.push(moment(model.datetime).format("DD.MM.YYYY"))
-		temp.push({x: idx, y: parseFloat(model.temperature)})
-		hue.push({x: (idx + 1), y: parseFloat(model.sensor2)})
-		battery.push({x: (idx + 1), y: parseFloat(model.battery_voltage_visual)})
-		signal.push({x: (idx + 1), y: parseInt(model.radio_quality)})
+		temp.push({x: idx, y: (if model.temperature? then parseFloat(model.temperature) else null)})
+		hue.push({x: (idx + 1), y: (if model.sensor2? then parseInt(model.sensor2) else null)})
+		battery.push({x: (idx + 1), y: (if model.battery_voltage_visual? then parseFloat(model.battery_voltage_visual) else null)})
+		signal.push({x: (idx + 1), y: (if model.radio_quality? then parseInt(model.radio_quality) else null)})
 	)
 
 	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
