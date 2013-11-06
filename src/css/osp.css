@@ -53,3 +53,11 @@ table {
 .nav-pills li {
 	min-width: 160px;
 }
+#sensors-list thead>tr>th,
+	#sensors-list tbody>tr>th,
+	#sensors-list tfoot>tr>th,
+	#sensors-list thead>tr>td,
+	#sensors-list tbody>tr>td,
+	#sensors-list tfoot>tr>td {
+	padding: 4px;
+}
