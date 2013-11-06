@@ -67,18 +67,15 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.loadDots = ->
     $scope.processing = true
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + 
-      '/dots?start=' + $scope.chartStart.unix() + 
+      '/ticks?start=' + $scope.chartStart.unix() + 
       '&end=' + $scope.chartEnd.unix() +
       '&dots_per_day=' + $scope.dotsPerDay).success((data) ->
-      if data?
         setTimeout(->
-          ospMap.drawMap data.dots, () ->
+          ospMap.drawMap data.ticks, () ->
             $scope.$apply(()->
               $scope.processing = false
             )
         , 0)
-      else
-        $scope.errorMsg = "Backend didn't return any usable data"
     ).error((data, status, headers, config) ->
       $scope.errorMsg = "Couldn't load chart data from backend."
     )
