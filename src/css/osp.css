@@ -60,4 +60,5 @@ table {
 	#sensors-list tbody>tr>td,
 	#sensors-list tfoot>tr>td {
 	padding: 4px;
+	cursor: pointer;
 }
