@@ -71,6 +71,8 @@
                   <li><a href="#" ng-click="selectRange('Year')">Year</a></li>
                   <li><a href="#" ng-click="selectRange('Quarter')">Quarter</a></li>
                   <li><a href="#" ng-click="selectRange('Month')">Month</a></li>
+                  <li><a href="#" ng-click="selectRange('Biweek')">Biweek</a></li>
+                  <li><a href="#" ng-click="selectRange('Week')">Week</a></li>
                 </ul>
               </li>
             </ul>
@@ -128,9 +130,9 @@
                 <div ng-show="chartView">
                   <div id="wait-overlay" ng-show="processing"></div>
                   <div class="text-center">
-                    <span class="btn glyphicon glyphicon-arrow-left"></span>
-                    <span id="selected-range">06.10.2013 - 06.11.2013</span>
-                    <span class="btn glyphicon glyphicon-arrow-right"></span>
+                    <span class="btn glyphicon glyphicon-arrow-left" ng-click="slideRange(-1)"></span>
+                    <span id="selected-range"><span ng-bind="chartStart | moment_date"></span> - <span ng-bind="chartEnd | moment_date"></span></span>
+                    <span class="btn glyphicon glyphicon-arrow-right" ng-click="slideRange(1)"></span>
                   </div>
                   <h4>Temperature</h4>
                   <div id="temp" class="chart_container">

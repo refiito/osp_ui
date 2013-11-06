@@ -47,6 +47,6 @@ table {
 .controller-name span.input-group-addon {
 	border: 1px solid #ccc;
 }
-#selected-range {
+#selected-range, #selected-range span {
 	vertical-align: bottom;
 }

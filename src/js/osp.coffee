@@ -15,6 +15,30 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.ticks = []
   $scope.page = 1
   $scope.pages = 1
+  $scope.chartStart = moment().subtract(1, 'month')
+  $scope.chartEnd = moment()
+  $scope.dotsPerDay = 12
+
+  $scope.getUnitForRage = ->
+    if $scope.range == 'Biweek'
+      'Week'
+    else if $scope.range == 'Quarter'
+      'Month'
+    else
+      $scope.range
+
+  $scope.correctAmount = (amount) ->
+    if $scope.range == 'Biweek'
+      amount * 2
+    else if $scope.range == 'Quarter'
+      amount * 3
+    else
+      amount
+
+  $scope.slideRange = (amount) ->
+    $scope.chartStart.add($scope.correctAmount(amount), $scope.getUnitForRage())
+    $scope.chartEnd.add($scope.correctAmount(amount), $scope.getUnitForRage())
+    $scope.loadTicks()
 
   $scope.selectController = (controller) ->
     $scope.selectedController = controller
@@ -43,6 +67,7 @@ osp.controller "MainController", ($scope, $http) ->
 
   $scope.selectRange = (range) ->
     $scope.range = range
+    $scope.chartStart = moment($scope.chartEnd).subtract($scope.correctAmount(1), $scope.getUnitForRage())
     $scope.loadTicks()
 
   $scope.saveControllerName = (controller) ->
@@ -58,3 +83,4 @@ osp.controller "MainController", ($scope, $http) ->
 
 osp.filter 'human_date', -> (value) -> moment(value).format("DD.MM.YYYY HH:mm")
 osp.filter 'unnamed', -> (value) ->  if value then value else '(unnamed)'
+osp.filter 'moment_date', -> (value) -> value.format("DD.MM.YYYY")
