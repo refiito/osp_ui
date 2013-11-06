@@ -50,11 +50,11 @@ osp.controller "MainController", ($scope, $http) ->
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + 
       '/ticks?start=' + $scope.chartStart.unix() +
-      '&end=' + $scope.chartStart.unix()).success((data) ->
-        $scope.ticks = data.ticks
-        $scope.paginatedTicks = data.ticks.slice 0, kPageSize
-        $scope.pages = Math.floor data.ticks.length / kPageSize
-        $scope.pages += 1 if data.ticks.length % kPageSize
+      '&end=' + $scope.chartEnd.unix()).success((data) ->
+        $scope.ticks = data
+        $scope.paginatedTicks = data.slice 0, kPageSize
+        $scope.pages = Math.floor data.length / kPageSize
+        $scope.pages += 1 if data.length % kPageSize
         $scope.page = 1
     ).error((data, status, headers, config) ->
       $scope.errorMsg = "Couldn't load list data from backend."
