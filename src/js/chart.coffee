@@ -17,7 +17,7 @@ ospMap.putData = (labels, data, container, chart) ->
 		element: elm,
 		renderer: 'line',
 		height: 200,
-		width: 750,
+		width: 700,
 		min: 'auto',
 		series: [
 			data: data,
@@ -36,8 +36,9 @@ ospMap.putData = (labels, data, container, chart) ->
 		orientation: 'bottom',
 		element: xelm,
 		ticks: 5,
-		pixelsPerTick: 75,
-		tickFormat: format
+		pixelsPerTick: 150,
+		tickFormat: format,
+		width: 750
 	)
 
 	yelm = document.querySelector(container + ' .y_axis')
