@@ -50,6 +50,12 @@ table {
 #selected-range, #selected-range span {
 	vertical-align: bottom;
 }
+#selected-range span.caret {
+	vertical-align: text-bottom;
+}
+#selected-range span.dropdown {
+	cursor: pointer;
+}
 .nav-pills li {
 	min-width: 160px;
 }
