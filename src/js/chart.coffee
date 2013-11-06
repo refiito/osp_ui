@@ -17,12 +17,11 @@ ospMap.putData = (labels, data, container, chart) ->
 		element: elm,
 		renderer: 'line',
 		height: 200,
-		width: 600,
+		width: 700,
+		min: 'auto',
 		series: [
-			{
-				data: data,
-				color: "#c05020"
-			}
+			data: data,
+			color: "#c05020"
 		]
 	)
 
@@ -36,8 +35,10 @@ ospMap.putData = (labels, data, container, chart) ->
 		graph: chart,
 		orientation: 'bottom',
 		element: xelm,
-		pixelsPerTick: 50,
-		tickFormat: format
+		ticks: 5,
+		pixelsPerTick: 150,
+		tickFormat: format,
+		width: 750
 	)
 
 	yelm = document.querySelector(container + ' .y_axis')
@@ -46,7 +47,7 @@ ospMap.putData = (labels, data, container, chart) ->
 	y_ticks = new Rickshaw.Graph.Axis.Y(
 		graph: chart,
 		orientation: 'left',
-		pixelsPerTick: 100,
+		pixelsPerTick: 20,
 		tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
 		element: yelm,
 	)
@@ -54,45 +55,27 @@ ospMap.putData = (labels, data, container, chart) ->
 	chart.render()
 
 
-ospMap.drawMap = (data) ->
-	ospMap.tempChart = null
+ospMap.drawMap = (data, done) ->
+	labels = []
+	temp = []
+	hue = []
+	battery = []
+	signal = []
 
-	labels = _.map(data, (model) ->
-		moment(model.datetime).format("HH:mm")
-	)
-
-	temp = _.map(data, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: model.temperature
-		}
+	_.each(data.reverse().slice(0, 599), (model, idx) ->
+		labels.push(moment(model.datetime).format("DD.MM.YYYY"))
+		temp.push({x: idx, y: parseFloat(model.temperature)})
+		hue.push({x: (idx + 1), y: parseFloat(model.sensor2)})
+		battery.push({x: (idx + 1), y: parseFloat(model.battery_voltage_visual)})
+		signal.push({x: (idx + 1), y: parseInt(model.radio_quality)})
 	)
 
 	ospMap.putData(labels, temp, '#temp', ospMap.tempChart)
-
-	#hue
-	hue = _.map(data, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseFloat(model.sensor2)
-		}
-	)
 	ospMap.putData(labels, hue, '#hue', ospMap.hueChart)
-
-	#battery
-	battery = _.map(data, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: model.battery_voltage_visual
-		}
-	)
 	ospMap.putData(labels, battery, '#battery', ospMap.batChart)
-	
-	#signal
-	signal = _.map(data, (model, idx) ->
-		{
-			x: (idx + 1)
-			y: parseInt(model.radio_quality)
-		}
-	)
 	ospMap.putData(labels, signal, '#signal', ospMap.sigChart)
+
+	if done?
+		done()
+
+	true
