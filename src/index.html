@@ -89,7 +89,29 @@
               </div>
               <div class="col-md-9">
                 <div ng-show="!chartView">
-                  <table>
+                  <div class="text-center">
+                    <span class="btn glyphicon glyphicon-arrow-left" ng-click="slideRange(-1)"></span>
+                    <span id="selected-range">
+                      <span ng-bind="chartStart | moment_date"></span>
+                       - 
+                      <span ng-bind="chartEnd | moment_date"></span>
+                      <span class="dropdown">
+                        <span class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          (<span ng-bind="range"></span>)
+                          <span class="caret"></span>
+                        </span>
+                        <ul class="dropdown-menu text-left">
+                          <li><a href="#" ng-click="selectRange('Week')">Week</a></li>
+                          <li><a href="#" ng-click="selectRange('Biweek')">Biweek</a></li>
+                          <li><a href="#" ng-click="selectRange('Month')">Month</a></li>
+                          <li><a href="#" ng-click="selectRange('Quarter')">Quarter</a></li>
+                          <li><a href="#" ng-click="selectRange('Year')">Year</a></li>
+                        </ul>
+                      </span>
+                    </span>
+                    <span class="btn glyphicon glyphicon-arrow-right" ng-click="slideRange(1)"></span>
+                  </div>
+                  <table class="top-15">
                     <thead>
                       <tr>
                         <th>Datetime</th>
@@ -129,7 +151,7 @@
                       <span ng-bind="chartEnd | moment_date"></span>
                       <span class="dropdown">
                         <span class="dropdown-toggle" data-toggle="dropdown" href="#">
-                          <span ng-bind="range"></span>
+                          (<span ng-bind="range"></span>)
                           <span class="caret"></span>
                         </span>
                         <ul class="dropdown-menu text-left">
