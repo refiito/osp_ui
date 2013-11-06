@@ -63,8 +63,6 @@ ospMap.drawMap = (data, done) ->
 	signal = []
 
 	_.each(data, (model, idx) ->
-		console.log(model)
-
 		labels.push(moment(model.datetime).format("DD.MM.YYYY"))
 		temp.push({x: idx, y: (if model.temperature? then parseFloat(model.temperature) else null)})
 		hue.push({x: (idx + 1), y: (if model.sensor2? then parseInt(model.sensor2) else null)})
