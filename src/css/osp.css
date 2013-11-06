@@ -67,3 +67,6 @@ table {
 	padding: 4px;
 	cursor: pointer;
 }
+#unplaced-sensors span {
+	margin: 5px;
+}

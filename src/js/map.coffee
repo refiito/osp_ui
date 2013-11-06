@@ -1,15 +1,25 @@
 ospGMap = {}
+window.ospGMap = ospGMap
 
 ospGMap.map = null
 
 initialize = () ->
-  myLatlng = new google.maps.LatLng(-25.363882,131.044922)
+  initial_center = new google.maps.LatLng(-25.363882,131.044922)
+
   mapOptions =
-    zoom: 4,
-    center: myLatlng,
+    zoom: 16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   
   ospGMap.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions)
+  if(navigator.geolocation) 
+    navigator.geolocation.getCurrentPosition((position) ->
+      initial_center = new google.maps.LatLng(position.coords.latitude,position.coords.longitude)
+      ospGMap.map.setCenter(initial_center)
+    , () ->
+      ospGMap.map.setCenter(initial_center)
+    )
+  else
+    ospGMap.map.setCenter(initial_center)
 
   true
 
