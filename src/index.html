@@ -86,7 +86,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="sensor in sensors">
+                    <tr ng-repeat="sensor in sensors" ng-class="{success: selectedSensor==sensor}">
                       <td><a href="" ng-click="selectSensor(sensor)">{{ sensor.id }}</a></td>
                       <td ng-bind="sensor.last_tick | human_date"></td>
                     </tr>
