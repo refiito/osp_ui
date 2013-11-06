@@ -9,22 +9,24 @@ ospGMap.saveSensorCallback = null
 ospGMap.markers = []
 
 initialize = () ->
-  initial_center = new google.maps.LatLng(-25.363882,131.044922)
+  initial_center = new google.maps.LatLng(59.435,24.76)
 
   mapOptions =
     zoom: 16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   
   ospGMap.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions)
-  if(navigator.geolocation) 
-    navigator.geolocation.getCurrentPosition((position) ->
-      initial_center = new google.maps.LatLng(position.coords.latitude,position.coords.longitude)
-      ospGMap.map.setCenter(initial_center)
-    , () ->
-      ospGMap.map.setCenter(initial_center)
-    )
-  else
-    ospGMap.map.setCenter(initial_center)
+  #if(navigator.geolocation) 
+  #  navigator.geolocation.getCurrentPosition((position) ->
+  #    initial_center = new google.maps.LatLng(position.coords.latitude,position.coords.longitude)
+      #ospGMap.map.setCenter(initial_center)
+  #  , () ->
+      #ospGMap.map.setCenter(initial_center)
+  #  )
+  #else
+  #  true
+  
+  ospGMap.map.setCenter(initial_center)
 
   true
 
@@ -62,6 +64,8 @@ ospGMap.drawMap = (sensors) ->
       )
       ospGMap.markers.push(marker)
   )
+  if ospGMap.markers.length > 0
+    ospGMap.map.setCenter(ospGMap.markers[0].position)    
 
 ospGMap.clearMarkers = ->
   _.each(ospGMap.markers, (marker) ->
