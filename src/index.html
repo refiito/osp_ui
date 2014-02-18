@@ -44,15 +44,6 @@
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="errorMsg=null">&times;</button>
           <span ng-bind='errorMsg'></span>
         </div>
-        <div class="row">
-          <div class="col-md-11">
-            <ul class="nav nav-tabs">
-              <li ng-repeat="controller in controllers" class="text-center" ng-class="{active: selectedController==controller}">
-                <a href="#" ng-click="selectController(controller)" ng-bind="controller.name | unnamed"></a>
-              </li>
-            </ul>
-          </div><!-- col -->
-        </div>
         <div class="row top-15">
           <div class="col-md-11" ng-show="selectedController">
             <div class="row">

@@ -4,7 +4,9 @@ osp_map = angular.module 'osp_map', ->
 host = 'http://zeitl.com'
 
 osp_map.controller "MainController", ($scope, $http) ->
-  $http.get('http://zeitl.com/api/controllers').success (data) -> $scope.controllers = data
+  $http.get('http://zeitl.com/api/controllers').success (data) -> 
+    $scope.controllers = data
+    $scope.selectController(if $scope.controllers.length > 0 then $scope.controllers[0] else null)
 
   $scope.selectedSensor = null
 

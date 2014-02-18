@@ -41,15 +41,6 @@
 
     <div class="container" ng-controller="MainController">
       <div class="starter-template">
-        <div class="row">
-          <div class="col-md-12">
-            <ul class="nav nav-tabs">
-              <li ng-repeat="controller in controllers" class="text-center" ng-class="{active: selectedController==controller}">
-                <a href="#" ng-click="selectController(controller)">{{ controller.name }}</a>
-              </li>
-            </ul>
-          </div><!-- col -->
-        </div>
         <div class="row top-15">
           <div class="col-md-12" id="unplaced-sensors">
             <span ng-repeat="sensor in sensors" class="label label-success" ng-click="placeSensor(sensor)" ng-class="{'label-warning': selectedSensor==sensor}">{{ sensor.id }}</span>
