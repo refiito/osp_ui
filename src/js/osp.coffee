@@ -5,8 +5,11 @@ host = 'http://zeitl.com'
 
 kPageSize = 50
 
-osp.controller "MainController", ($scope, $http, $location) ->
-  $scope.base = $location.path()
+osp.controller "MainController", ($scope, $http, $location, $filter) ->
+  loc_base = $location.path().split("/")
+  $scope.base = "/" + loc_base[1] + "/" + loc_base[2]
+
+  $scope.sensor_url = (if loc_base.length > 3 then loc_base[3] else null)
 
   if $scope.base != ""
     $http.get(host + '/api/controllers' + $scope.base).success((data) ->
@@ -51,7 +54,11 @@ osp.controller "MainController", ($scope, $http, $location) ->
     $http.get(host + '/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) ->
       $scope.sensors = data
       $scope.predicate = 'last_tick'
-      $scope.selectSensor(if $scope.sensors.length > 0 then $scope.sensors[0] else null)
+      if $scope.sensor_url
+        sensor = $filter('get_by_id')($scope.sensors, $scope.sensor_url)
+      else
+        sensor = if $scope.sensors.length > 0 then $scope.sensors[0] else null
+      $scope.selectSensor(sensor)
 
   $scope.loadTicks = ->
     $http.get(host + '/api/sensors/' + $scope.selectedSensor.id + 
@@ -125,3 +132,8 @@ osp.controller "MainController", ($scope, $http, $location) ->
 osp.filter 'human_date', -> (value) -> moment(value).format("DD.MM.YYYY HH:mm")
 osp.filter 'unnamed', -> (value) ->  if value then value else '(unnamed)'
 osp.filter 'moment_date', -> (value) -> value.format("DD.MM.YYYY")
+osp.filter 'get_by_id', -> (input, id) -> 
+  for item in input
+    if +item.id == +id
+      return item
+  return null
