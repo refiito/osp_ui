@@ -45,6 +45,7 @@ osp.controller "MainController", ($scope, $http) ->
     $scope.selectedController = controller
     $http.get(host + '/api/controllers/' + $scope.selectedController.id + '/sensors').success (data) ->
       $scope.sensors = data
+      $scope.predicate = 'last_tick'
       $scope.selectSensor(if $scope.sensors.length > 0 then $scope.sensors[0] else null)
 
   $scope.loadTicks = ->
