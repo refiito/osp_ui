@@ -101,6 +101,7 @@ osp.controller "MainController", ($scope, $http) ->
       when 'Quarter' then $scope.dotsPerDay = 4
       when 'Month' then $scope.dotsPerDay = 12
       when 'Biweek' then $scope.dotsPerDay = 24
+      when 'Week' then $scope.dotsPerDay = 24
       else $scope.dotsPerDay = null
     $scope.loadSensorData()
 
