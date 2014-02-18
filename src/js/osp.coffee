@@ -6,8 +6,10 @@ host = 'http://zeitl.com'
 kPageSize = 50
 
 osp.controller "MainController", ($scope, $http, $location) ->
-  if $location.path() != ""
-    $http.get(host + '/api/controllers' + $location.path()).success (data) ->
+  $scope.base = $location.path()
+
+  if $scope.base != ""
+    $http.get(host + '/api/controllers' + $scope.base).success (data) ->
       $scope.selectController(if data then data else null)
 
   $scope.range = 'Month'
