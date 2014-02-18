@@ -3,11 +3,10 @@ osp_map = angular.module 'osp_map', ->
 
 host = 'http://zeitl.com'
 
-osp_map.controller "MainController", ($scope, $http) ->
-  $http.get('http://zeitl.com/api/controllers').success (data) -> 
-    $scope.controllers = data
-    $scope.selectController(if $scope.controllers.length > 0 then $scope.controllers[0] else null)
-
+osp_map.controller "MainController", ($scope, $http, $location) ->
+  if $location.path() != ""
+    $http.get(host + '/api/controllers' + $location.path()).success (data) ->
+      $scope.selectController(if data then data else null)
   $scope.selectedSensor = null
 
   $scope.selectController = (controller) ->
