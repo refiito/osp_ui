@@ -9,8 +9,11 @@ osp.controller "MainController", ($scope, $http, $location) ->
   $scope.base = $location.path()
 
   if $scope.base != ""
-    $http.get(host + '/api/controllers' + $scope.base).success (data) ->
+    $http.get(host + '/api/controllers' + $scope.base).success((data) ->
       $scope.selectController(if data then data else null)
+    ).error((data, status, headers, config) ->
+      $scope.errorMsg = "Couldn't find a controller, please check your URL."
+    )
 
   $scope.range = 'Month'
   $scope.chartView = true
